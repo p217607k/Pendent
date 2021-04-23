@@ -8,6 +8,7 @@ from .forms import UserRegisterForm
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
+from newapp.serializers import deviceSerializers, setupSerializers
 
 
 
@@ -57,3 +58,86 @@ def checkpassword(request):
         return JsonResponse({'valid':True})
     except:
         return JsonResponse({'valid':False})
+
+
+@api_view(["GET","POST"])
+# @permission_classes([IsAuthenticated])
+def device(request):
+    if request.method=="GET":
+
+        data = device.objects.filter(user = request.user)
+        placeJson = deviceSerializers(data, many=True)
+        print(data)
+        return Response(placeJson.data)
+
+    
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        if received_json_data['put']!='yes':
+            serializer = deviceSerializers(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response("data created", status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        else:
+            device_id=received_json_data['d_id']
+            try:
+                device_object=device.objects.get(d_id=device_id)
+            except device_object.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+            # del request.data['d_id']
+            # print(request.data)
+            serializer = deviceSerializers(device_object, data=request.data)
+            # print(serializer)
+            # device_object=device.objects.filter(d_id=device_id)
+            # print(device_object)
+            if serializer.is_valid():
+                # serializer.d_id =  device_object
+                # print(serializer.d_id)
+                serializer.save()
+                return Response("data updated", status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(["GET", "POST"])
+def setup(request):
+    if request.method=="GET":
+
+        # data = request.data
+        # user_object = User.objects.get(email=data['email'])
+        floor_data = setup.objects.filter(user = request.user,s_id=request.GET['s_id'])
+        floorJson = setupSerializers(floor_data, many=True)
+        return Response(floorJson.data)
+
+    
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        if received_json_data['put']!='yes':
+            serializer = setupSerializers(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response("data created", status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        else:
+            device_id=received_json_data['s_id']
+            try:
+                device_object=setup.objects.get(s_id=device_id)
+            except device_object.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+            # del request.data['d_id']
+            # print(request.data)
+            serializer = setupSerializers(device_object, data=request.data)
+            # print(serializer)
+            # device_object=device.objects.filter(d_id=device_id)
+            # print(device_object)
+            if serializer.is_valid():
+                # serializer.d_id =  device_object
+                # print(serializer.d_id)
+                serializer.save()
+                return Response("data updated", status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
