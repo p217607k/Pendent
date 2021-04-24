@@ -28,7 +28,6 @@ from django.contrib import messages
 from django.contrib.auth import authenticate,login,password_validation
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserRegisterForm, SubUserRegisterForm
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
