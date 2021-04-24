@@ -44,7 +44,6 @@ from rest_framework import status
 import random, math
 from datetime import date
 from django.conf import settings
-import json
 import os
 from django.conf import settings
 from django.http import HttpResponse
@@ -109,9 +108,8 @@ def checkpassword(request):
 
 @api_view(["GET","POST"])
 # @permission_classes([IsAuthenticated])
-def device(request):
+def device_list(request):
     if request.method=="GET":
-
         data = device.objects.filter(user = request.user)
         placeJson = deviceSerializers(data, many=True)
         print(data)
@@ -129,14 +127,14 @@ def device(request):
         
         else:
             device_id=received_json_data['d_id']
-            # try:
-            #     device123_object=device.objects.get(d_id=device_id)
-            # except device123_object.DoesNotExist:
-            #     return Response(status=status.HTTP_404_NOT_FOUND)
+            try:
+                device123_object=device.objects.get(d_id=device_id)
+            except device123_object.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
 
             # del request.data['d_id']
             # print(request.data)
-            # serializer = deviceSerializers(device123_object, data=request.data)############
+            serializer = deviceSerializers(device123_object, data=request.data)
             # print(serializer)
             # device_object=device.objects.filter(d_id=device_id)
             # print(device_object)
@@ -150,7 +148,7 @@ def device(request):
 
 
 @api_view(["GET", "POST"])
-def setup(request):
+def setup_list(request):
     if request.method=="GET":
 
         # data = request.data
