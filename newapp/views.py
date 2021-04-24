@@ -10,6 +10,54 @@ from rest_framework import status
 from django.http import JsonResponse
 from newapp.serializers import deviceSerializers, setupSerializers
 import json
+from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib import auth
+from django.contrib import messages
+from datetime import datetime, timedelta
+from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from rest_framework import status
+# from .models import employees
+# from .serializers import employeesSerializer
+from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
+from django.shortcuts import render,redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate,login,password_validation
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import UserRegisterForm, SubUserRegisterForm
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.template import Context
+from myapp.models import *
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
+from django.contrib.auth.models import User
+from rest_framework.decorators import authentication_classes
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from rest_framework.filters import SearchFilter,OrderingFilter
+from rest_framework import serializers
+from rest_framework import status
+import random, math
+from datetime import date
+from django.conf import settings
+import json
+import os
+from django.conf import settings
+from django.http import HttpResponse
+from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework import permissions
+import http.client
+import ast
+
+
+conn = http.client.HTTPConnection("2factor.in")
 
 
 
