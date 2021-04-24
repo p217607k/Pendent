@@ -42,6 +42,7 @@ from rest_framework.filters import SearchFilter,OrderingFilter
 from rest_framework import serializers
 from rest_framework import status
 import random, math
+from newapp.models import *
 from datetime import date
 from django.conf import settings
 import os
@@ -107,7 +108,7 @@ def checkpassword(request):
 
 
 @api_view(["GET","POST"])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def device_list(request):
     if request.method=="GET":
         data = device.objects.filter(user = request.user)
@@ -148,6 +149,7 @@ def device_list(request):
 
 
 @api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
 def setup_list(request):
     if request.method=="GET":
 
