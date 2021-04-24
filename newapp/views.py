@@ -129,14 +129,14 @@ def device(request):
         
         else:
             device_id=received_json_data['d_id']
-            try:
-                device123_object=device.objects.get(d_id=device_id)
-            except device123_object.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+            # try:
+            #     device123_object=device.objects.get(d_id=device_id)
+            # except device123_object.DoesNotExist:
+            #     return Response(status=status.HTTP_404_NOT_FOUND)
 
             # del request.data['d_id']
             # print(request.data)
-            serializer = deviceSerializers(device123_object, data=request.data)
+            # serializer = deviceSerializers(device123_object, data=request.data)############
             # print(serializer)
             # device_object=device.objects.filter(d_id=device_id)
             # print(device_object)
