@@ -8,12 +8,12 @@ from newapp.models import device, setup
 class deviceSerializers(serializers.ModelSerializer):
     class Meta:
         model = device
-        fields = '__all__'
+        fields = ('id','d_id', 'd_name')
 
 class setupSerializers(serializers.ModelSerializer):
     class Meta:
         model = setup
-        fields = '__all__'
+        fields = ('id','trigger','color','ring','message')
         depth = 1
 
 

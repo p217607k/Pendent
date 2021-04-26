@@ -111,10 +111,9 @@ def checkpassword(request):
 @permission_classes([IsAuthenticated])
 def device_list(request):
     if request.method=="GET":
-        data = device.objects.filter(user = request.user)
-        placeJson = deviceSerializers(data, many=True)
-        print(data)
-        return Response(placeJson.data)
+        floor_data = device.objects.filter(user = request.user,d_id=request.GET['d_id'])
+        floorJson = deviceSerializers(floor_data, many=True)
+        return Response(floorJson.data)
 
     
     elif request.method == "POST":
@@ -155,7 +154,7 @@ def setup_list(request):
 
         # data = request.data
         # user_object = User.objects.get(email=data['email'])
-        floor_data = setup.objects.filter(user = request.user,s_id=request.GET['s_id'])
+        floor_data = setup.objects.filter(user = request.user,d_id=request.GET['d_id'])
         floorJson = setupSerializers(floor_data, many=True)
         return Response(floorJson.data)
 
@@ -170,9 +169,9 @@ def setup_list(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
         else:
-            device_id=received_json_data['s_id']
+            device_id=received_json_data['d_id']
             try:
-                device123_object=setup.objects.get(s_id=device_id)
+                device123_object=setup.objects.get(d_id=device_id)
             except device123_object.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 

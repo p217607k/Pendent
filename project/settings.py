@@ -27,7 +27,7 @@ SECRET_KEY = ')_yw9p11v@8!)glovf-3hxn2ewra&6*vqc!5r%9$5&w+ky#ueu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.43.36']
 
 
 # Application definition
@@ -89,25 +89,25 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'pendent',
-#         'USER': 'postgres',
-#         'PASSWORD': '8958096552',
-#         'HOST': 'localhost',
-#     }
-# }
-
 DATABASES = {
-    'default':{
-        'ENGINE': 'django,db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'pendent',
+        'USER': 'postgres',
+        'PASSWORD': '8958096552',
+        'HOST': 'localhost',
     }
 }
-import dj_database_url
-db_from_env = dj_database_url.config(conn_max_age=600)
-DATABASES['default'].update(db_from_env)
+
+# DATABASES = {
+#     'default':{
+#         'ENGINE': 'django,db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3')
+#     }
+# }
+# import dj_database_url
+# db_from_env = dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
