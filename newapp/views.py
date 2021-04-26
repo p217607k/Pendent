@@ -113,7 +113,9 @@ def device_list(request):
     if request.method=="GET":
         floor_data = device.objects.filter(user = request.user,d_id=request.GET['d_id'])
         floorJson = deviceSerializers(floor_data, many=True)
-        return Response(floorJson.data)
+        # return Response(floorJson.data)
+        dd = floorJson.data[:]
+        return Response(dd[0])
 
     
     elif request.method == "POST":
@@ -154,9 +156,11 @@ def setup_list(request):
 
         # data = request.data
         # user_object = User.objects.get(email=data['email'])
-        floor_data = setup.objects.filter(user = request.user,d_id=request.GET['d_id'])
+        floor_data = setup.objects.filter(user = request.user,d_id=request.GET ['d_id'])
         floorJson = setupSerializers(floor_data, many=True)
-        return Response(floorJson.data)
+        # return Response(floorJson.data)
+        dd = floorJson.data[:]
+        return Response(dd[0])
 
     
     elif request.method == "POST":
