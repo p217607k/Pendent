@@ -4,11 +4,11 @@ from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.models import User
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserSSIDForm
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import JsonResponse
-from newapp.serializers import deviceSerializers, setupSerializers
+from newapp.serializers import deviceSerializers, setupSerializers, healthSerializers
 import json
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -106,13 +106,32 @@ def checkpassword(request):
     except:
         return JsonResponse({'valid':False})
 
+######################### SSID Login ############################33
+@csrf_exempt
+@renderer_classes((JSONRenderer))
+def SSID_Password(request):
+    form = UserSSIDForm(request.POST)
+    # print(request.POST)
+    # print(form)
+    if form.is_valid():
+        form.save()
+        return JsonResponse({"Registration":"Done"})
+    else :
+        # return JsonResponse({"Password is too similar"})
+        print(form.errors.as_json())
+        # return JsonResponse({"Password is too similar"})
+        # return Response("data updated", status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR ,data=form.errors.as_json())
+        # print("pass is too similar")
+        # return JsonResponse({"Password is too similar"})
+
 
 @api_view(["GET","POST"])
 @permission_classes([IsAuthenticated])
 def device_list(request):
     if request.method=="GET":
-        floor_data = device.objects.filter(user = request.user,d_id=request.GET['d_id'])
-        floorJson = deviceSerializers(floor_data, many=True)
+        device_data = device.objects.filter(user = request.user,d_id=request.GET['d_id'])
+        floorJson = deviceSerializers(device_data, many=True)
         # return Response(floorJson.data)
         dd = floorJson.data[:]
         return Response(dd[0])
@@ -182,6 +201,50 @@ def setup_list(request):
             # del request.data['d_id']
             # print(request.data)
             serializer = setupSerializers(device123_object, data=request.data)
+            # print(serializer)
+            # device_object=device.objects.filter(d_id=device_id)
+            # print(device_object)
+            if serializer.is_valid():
+                # serializer.d_id =  device_object
+                # print(serializer.d_id)
+                serializer.save()
+                return Response("data updated", status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def health_list(request):
+    if request.method=="GET":
+
+        # data = request.data
+        # user_object = User.objects.get(email=data['email'])
+        health_data = health.objects.filter(user = request.user,d_id=request.GET ['d_id'])
+        healthJson = healthSerializers(health_data, many=True)
+        # return Response(floorJson.data)
+        dd = healthJson.data[:]
+        return Response(dd[0])
+
+    
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        if received_json_data['put']!='yes':
+            serializer = healthSerializers(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response("data created", status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        else:
+            device_id=received_json_data['d_id']
+            try:
+                device123_object=health.objects.get(d_id=device_id)
+            except device123_object.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+
+            # del request.data['d_id']
+            # print(request.data)
+            serializer = healthSerializers(device123_object, data=request.data)
             # print(serializer)
             # device_object=device.objects.filter(d_id=device_id)
             # print(device_object)

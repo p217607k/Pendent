@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from drf_braces.serializers.form_serializer import FormSerializer
-from newapp.forms import UserRegisterForm
-from newapp.models import device, setup
+from newapp.forms import UserRegisterForm, UserSSIDForm
+from newapp.models import device, setup, health, ssidPassword
 # from myapp.models import place_type,floor,room,device,deviceStatus,emergencyNumber,sensors
 
 class deviceSerializers(serializers.ModelSerializer):
@@ -18,6 +18,12 @@ class setupSerializers(serializers.ModelSerializer):
         depth = 1
 
 
+class healthSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = health
+        fields = ('H1sensor','H2sensor','H3sensor','H4sensor')
+
+
 class userSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -26,3 +32,7 @@ class userSerializers(serializers.ModelSerializer):
 class user_register(FormSerializer):
     class Meta(object):
         form = UserRegisterForm
+
+class usessidpassword(FormSerializer):
+    class Meta(object):
+        form = UserSSIDForm

@@ -21,6 +21,21 @@ class setup(models.Model):
     ring = models.IntegerField(null=False)
     message = models.TextField(max_length=999)
 
+class health(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    d_id = models.ForeignKey(device, on_delete=models.CASCADE)
+    H1sensor = models.FloatField(null=True)
+    H2sensor = models.FloatField(null=True)
+    H3sensor = models.FloatField(null=True)
+    H4sensor = models.FloatField(null=True)
+
+
+class ssidPassword(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    d_id = models.ForeignKey(device, on_delete=models.CASCADE)
+    ssid = models.CharField(unique=True, max_length=15)
+    password = models.CharField(null=False, max_length=50)
+
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
