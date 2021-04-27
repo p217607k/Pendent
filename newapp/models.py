@@ -24,10 +24,10 @@ class setup(models.Model):
 class health(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     d_id = models.ForeignKey(device, on_delete=models.CASCADE)
-    H1sensor = models.FloatField(null=True)
-    H2sensor = models.FloatField(null=True)
-    H3sensor = models.FloatField(null=True)
-    H4sensor = models.FloatField(null=True)
+    H1sensor = models.FloatField(default=0.0)
+    H2sensor = models.FloatField(default=0.0)
+    H3sensor = models.FloatField(default=0.0)
+    H4sensor = models.FloatField(default=0.0)
 
 
 class ssidPassword(models.Model):
