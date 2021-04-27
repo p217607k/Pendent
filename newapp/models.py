@@ -31,7 +31,6 @@ class health(models.Model):
 
 
 class ssidPassword(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     d_id = models.ForeignKey(device, on_delete=models.CASCADE)
     ssid = models.CharField(unique=True, max_length=15)
     password = models.CharField(null=False, max_length=50)

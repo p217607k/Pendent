@@ -8,7 +8,7 @@ from newapp.models import device, setup, health, ssidPassword
 class deviceSerializers(serializers.ModelSerializer):
     class Meta:
         model = device
-        # fields = ('id','d_id', 'd_name')
+        # fields = ('d_id', 'd_name')
         fields = '__all__'
 
 class setupSerializers(serializers.ModelSerializer):
