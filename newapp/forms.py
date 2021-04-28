@@ -13,10 +13,3 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email','phone_no','password1', 'password2','first_name','last_name']
-
-class UserSSIDForm(UserCreationForm):
-    ssid = forms.CharField(max_length=15)
-    password = forms.CharField(widget=forms.PasswordInput)
-    class Meta:
-        model = ssidPassword
-        fields = ['ssid','password']

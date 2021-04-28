@@ -29,4 +29,5 @@ urlpatterns = [
     path('device/',newapp_view.device_list),
     path('setupthings/',newapp_view.setup_list),
     path('findhealth/',newapp_view.health_list),
+    path('ssidpassword/',newapp_view.ssidpass_list),
 ]

@@ -5,6 +5,6 @@ from . models import *
 
 admin.site.register(setup)
 admin.site.register(device)
-admin.site.register(health)
+admin.site.register(healthrecord)
 admin.site.register(ssidPassword)
 # admin.site.register(sendRecivedMeassages)

@@ -21,17 +21,20 @@ class setup(models.Model):
     ring = models.IntegerField(null=False)
     message = models.TextField(max_length=999)
 
-class health(models.Model):
+class healthrecord(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    d_id = models.ForeignKey(device, on_delete=models.CASCADE)
-    H1sensor = models.FloatField(default=0.0)
-    H2sensor = models.FloatField(default=0.0)
-    H3sensor = models.FloatField(default=0.0)
-    H4sensor = models.FloatField(default=0.0)
+    d_id = models.OneToOneField(device, on_delete=models.CASCADE)
+    #deviceName=models.CharField(max_length=40)
+    s1 = models.FloatField(blank=True,null=True)
+    s2 = models.FloatField(blank=True,null=True)
+    s3 = models.FloatField(blank=True,null=True)
+    s4 = models.FloatField(blank=True,null=True)
 
+   
 
 class ssidPassword(models.Model):
-    d_id = models.ForeignKey(device, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    d_id = models.OneToOneField(device, on_delete=models.CASCADE)
     ssid = models.CharField(unique=True, max_length=15)
     password = models.CharField(null=False, max_length=50)
 
