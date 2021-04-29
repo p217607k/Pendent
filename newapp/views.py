@@ -44,7 +44,6 @@ from rest_framework import status
 import random, math
 from newapp.models import *
 from datetime import date
-from django.conf import settings
 import os
 from django.conf import settings
 from django.http import HttpResponse
@@ -111,7 +110,7 @@ def checkpassword(request):
 # @permission_classes([IsAuthenticated])
 def ssidpass_list(request):
     if request.method=="GET":
-        device_data = ssidPassword.objects.filter(user = request.user,d_id=request.GET['d_id'])
+        device_data = ssidPassword.objects.filter(d_id=request.GET['d_id'])
         floorJson = ssidPasswordSerializers(device_data, many=True)
         # return Response(floorJson.data)
         dd = floorJson.data[:]
@@ -146,11 +145,6 @@ def ssidpass_list(request):
                 serializer.save()
                 return Response("data updated", status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
 
 
 @api_view(["GET","POST"])
@@ -246,7 +240,7 @@ def health_list(request):
 
         # data = request.data
         # user_object = User.objects.get(email=data['email'])
-        health_data = healthrecord.objects.filter(user = request.user,d_id=request.GET ['d_id'])
+        health_data = healthrecord.objects.filter(d_id=request.GET ['d_id'])
         healthJson = recordhealthSerializers(health_data, many=True)
         # return Response(floorJson.data)
         dd = healthJson.data[:]
