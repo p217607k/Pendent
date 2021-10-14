@@ -52,21 +52,21 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import permissions
 import http.client
 import ast
-import pyrebase
+# import pyrebase
 
-config={
-    "apiKey": "AIzaSyBlKT-0XpVHAP-YqpAgEH93fmN6AyIds_s",
-    "authDomain": "genorion-79a43.firebaseapp.com",
-    "databaseURL": "https://genorion-79a43-default-rtdb.firebaseio.com/",
-    "projectId": "genorion-79a43",
-    "storageBucket": "genorion-79a43.appspot.com",
-    "messagingSenderId": "109228463289",
-    "appId": "1:109228463289:web:45b5d3e15401c007483768",
-    "measurementId": "G-WM79VJNKRH"
-}
-firebase = pyrebase.initialize_app(config)
-auth = firebase.auth()
-database = firebase.database()
+# config={
+#     "apiKey": "AIzaSyBlKT-0XpVHAP-YqpAgEH93fmN6AyIds_s",
+#     "authDomain": "genorion-79a43.firebaseapp.com",
+#     "databaseURL": "https://genorion-79a43-default-rtdb.firebaseio.com/",
+#     "projectId": "genorion-79a43",
+#     "storageBucket": "genorion-79a43.appspot.com",
+#     "messagingSenderId": "109228463289",
+#     "appId": "1:109228463289:web:45b5d3e15401c007483768",
+#     "measurementId": "G-WM79VJNKRH"
+# }
+# firebase = pyrebase.initialize_app(config)
+# auth = firebase.auth()
+# database = firebase.database()
 
 
 conn = http.client.HTTPConnection("2factor.in")
