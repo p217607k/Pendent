@@ -7,7 +7,7 @@ admin.site.register(setup)
 admin.site.register(device)
 admin.site.register(healthrecord)
 admin.site.register(ssidPassword)
-admin.site.register(energencyNumber)
+admin.site.register(emergencyNumber)
 admin.site.register(userimages)
 
 # admin.site.register(sendRecivedMeassages)

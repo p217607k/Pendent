@@ -39,6 +39,11 @@ urlpatterns = [
     # profile picture
     path('profilepicture/',newapp_view.profoto),
 
+    # emer number & ssid pass
+
+    path('addemernumbers/', newapp_view.emerNumber),
+    path('enterallthessidpasswords/', newapp_view.ssidList),
+
     # friends in need friend indeed
 
     path('friendsuaccess/', newapp_view.friendsuaccess),

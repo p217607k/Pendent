@@ -428,167 +428,68 @@ def friendtoaddList(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# friend request system
-
-from django.shortcuts import render
-from django.http import HttpResponse
-import json
-
-# from account.models import Account
-# from friend.models import FriendRequest, FriendList
-
-
-def friend_requests(request, *args, **kwargs):
-	context = {}
-	user = request.user
-	if user.is_authenticated:
-		user_id = kwargs.get("user_id")
-		account = User.objects.get(pk=user_id)
-		if account == user:
-			friend_requests = FriendRequest.objects.filter(receiver=account, is_active=True)
-			context['friend_requests'] = friend_requests
-		else:
-			return HttpResponse("You can't view another users friend requets.")
-	else:
-		redirect("login")
-	return render(request, "friend/friend_requests.html", context)
-
-
-def send_friend_request(request, *args, **kwargs):
-	user = request.user
-	payload = {}
-	if request.method == "POST" and user.is_authenticated:
-		user_id = request.POST.get("receiver_user_id")
-		if user_id:
-			receiver = User.objects.get(pk=user_id)
-			try:
-				# Get any friend requests (active and not-active)
-				friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver)
-				# find if any of them are active (pending)
-				try:
-					for request in friend_requests:
-						if request.is_active:
-							raise Exception("You already sent them a friend request.")
-					# If none are active create a new friend request
-					friend_request = FriendRequest(sender=user, receiver=receiver)
-					friend_request.save()
-					payload['response'] = "Friend request sent."
-				except Exception as e:
-					payload['response'] = str(e)
-			except FriendRequest.DoesNotExist:
-				# There are no friend requests so create one.
-				friend_request = FriendRequest(sender=user, receiver=receiver)
-				friend_request.save()
-				payload['response'] = "Friend request sent."
-
-			if payload['response'] == None:
-				payload['response'] = "Something went wrong."
-		else:
-			payload['response'] = "Unable to sent a friend request."
-	else:
-		payload['response'] = "You must be authenticated to send a friend request."
-	return HttpResponse(json.dumps(payload), content_type="application/json")
-
-
-def accept_friend_request(request, *args, **kwargs):
-	user = request.user
-	payload = {}
-	if request.method == "GET" and user.is_authenticated:
-		friend_request_id = kwargs.get("friend_request_id")
-		if friend_request_id:
-			friend_request = FriendRequest.objects.get(pk=friend_request_id)
-			# confirm that is the correct request
-			if friend_request.receiver == user:
-				if friend_request: 
-					# found the request. Now accept it
-					updated_notification = friend_request.accept()
-					payload['response'] = "Friend request accepted."
-
-				else:
-					payload['response'] = "Something went wrong."
-			else:
-				payload['response'] = "That is not your request to accept."
-		else:
-			payload['response'] = "Unable to accept that friend request."
-	else:
-		# should never happen
-		payload['response'] = "You must be authenticated to accept a friend request."
-	return HttpResponse(json.dumps(payload), content_type="application/json")
-
-
-def remove_friend(request, *args, **kwargs):
-	user = request.user
-	payload = {}
-	if request.method == "POST" and user.is_authenticated:
-		user_id = request.POST.get("receiver_user_id")
-		if user_id:
-			try:
-				removee = User.objects.get(pk=user_id)
-				friend_list = FriendList.objects.get(user=user)
-				friend_list.unfriend(removee)
-				payload['response'] = "Successfully removed that friend."
-			except Exception as e:
-				payload['response'] = f"Something went wrong: {str(e)}"
-		else:
-			payload['response'] = "There was an error. Unable to remove that friend."
-	else:
-		# should never happen
-		payload['response'] = "You must be authenticated to remove a friend."
-	return HttpResponse(json.dumps(payload), content_type="application/json")
+          ########### Add Emergency Numbers   ##################
 
 
 
-def decline_friend_request(request, *args, **kwargs):
-	user = request.user
-	payload = {}
-	if request.method == "GET" and user.is_authenticated:
-		friend_request_id = kwargs.get("friend_request_id")
-		if friend_request_id:
-			friend_request = FriendRequest.objects.get(pk=friend_request_id)
-			# confirm that is the correct request
-			if friend_request.receiver == user:
-				if friend_request: 
-					# found the request. Now decline it
-					updated_notification = friend_request.decline()
-					payload['response'] = "Friend request declined."
-				else:
-					payload['response'] = "Something went wrong."
-			else:
-				payload['response'] = "That is not your friend request to decline."
-		else:
-			payload['response'] = "Unable to decline that friend request."
-	else:
-		# should never happen
-		payload['response'] = "You must be authenticated to decline a friend request."
-	return HttpResponse(json.dumps(payload), content_type="application/json")
+@api_view(["GET","POST","PUT"])
+def emerNumber(request):
+    if request.method=="GET":
+        enumdata = emergencyNumber.objects.filter(user = request.user,d_id=request.GET['d_id'])
+        emernumberJson = emernumberSerializers(enumdata, many=True)
+        dd = emernumberJson.data[:]
+        return Response(dd[0])
+
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        serializer = emernumberSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("data created", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method =="PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['d_id']
+        try:
+            device_object=emergencyNumber.objects.get(d_id=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = emernumberSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("data updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+           #############3 SSid Password  #################
 
 
-def cancel_friend_request(request, *args, **kwargs):
-	user = request.user
-	payload = {}
-	if request.method == "POST" and user.is_authenticated:
-		user_id = request.POST.get("receiver_user_id")
-		if user_id:
-			receiver = User.objects.get(pk=user_id)
-			try:
-				friend_requests = FriendRequest.objects.filter(sender=user, receiver=receiver, is_active=True)
-			except FriendRequest.DoesNotExist:
-				payload['response'] = "Nothing to cancel. Friend request does not exist."
+@api_view(["GET","POST","PUT"])
+def ssidList(request):
+    if request.method == "GET":
+        device_data = ssidPassword.objects.filter(d_id=request.GET['d_id'])
+        roomJson = ssidPasswordSerializers(device_data, many=True)
+        dd = roomJson.data[:]
+        return Response(dd[0])
 
-			# There should only ever be ONE active friend request at any given time. Cancel them all just in case.
-			if len(friend_requests) > 1:
-				for request in friend_requests:
-					request.cance()
-				payload['response'] = "Friend request canceled."
-			else:
-				# found the request. Now cancel it
-				friend_requests.first().cancel()
-				payload['response'] = "Friend request canceled."
-		else:
-			payload['response'] = "Unable to cancel that friend request."
-	else:
-		# should never happen
-		payload['response'] = "You must be authenticated to cancel a friend request."
-	return HttpResponse(json.dumps(payload), content_type="application/json")
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        serializer = ssidPasswordSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("data created", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['d_id']
+        try:
+            device_object=ssidPassword.objects.get(d_id=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = ssidPasswordSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("data updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

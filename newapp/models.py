@@ -8,20 +8,28 @@ from django.contrib.auth.models import User
 from django.db.models.fields import CharField, EmailField
 
 
+class allDevices(models.Model):
+    d_id = models.CharField(max_length=40, default=0,primary_key=True)
+
+    def __str__(self):
+        return self.d_id
+
+
 class device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    d_id = models.CharField(unique=True, max_length=20)
+    d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
     d_name = models.CharField(max_length=15)
 
-class energencyNumber(models.Model):
+class emergencyNumber(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    number = models.BigIntegerField(blank=True, null=True)
+    d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
+    number1 = models.BigIntegerField(blank=True, null=True)
     number2 = models.BigIntegerField(blank=True, null=True)
     number3 = models.BigIntegerField(blank=True, null=True)
 
 class setup(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    d_id = models.OneToOneField(device, on_delete=models.CASCADE)
+    d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
     s_id = models.CharField(unique = True, max_length=20)
     trigger = models.CharField(unique=True, max_length=20, null=True)
     color = models.CharField(max_length=15, null=True)
@@ -49,7 +57,7 @@ class friendtoaccess(models.Model):
 
 
 class healthrecord(models.Model):
-    d_id = models.OneToOneField(device, on_delete=models.CASCADE)
+    d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
     #deviceName=models.CharField(max_length=40)
     healthS1 = models.FloatField(blank=True,null=True)
     healthS2 = models.FloatField(blank=True,null=True)
@@ -57,7 +65,7 @@ class healthrecord(models.Model):
     healthS4 = models.FloatField(blank=True,null=True)
 
 class ssidPassword(models.Model):
-    d_id = models.OneToOneField(device, on_delete=models.CASCADE)
+    d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
     ssid1 = models.CharField(unique=True, max_length=15)
     password1 = models.CharField(null=False, max_length=50)
     ssid2 = models.CharField(unique=True, max_length=15)

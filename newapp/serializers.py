@@ -69,4 +69,16 @@ class friendtoaccessgetSerializers(serializers.ModelSerializer):
     class Meta:
         model = friendtoaccess
         fields = ('name','email')
+
+
+class emernumberSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = emergencyNumber
+        fields = '__all__'
+
+
+class ssidPasswordSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = ssidPassword
+        fields = '__all__'
         
