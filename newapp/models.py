@@ -1,25 +1,52 @@
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import post_save
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
+from django.db.models.fields import CharField, EmailField
 
-# Create your models here.
 
 class device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     d_id = models.CharField(unique=True, max_length=20)
     d_name = models.CharField(max_length=15)
 
+class energencyNumber(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    number = models.BigIntegerField(blank=True, null=True)
+    number2 = models.BigIntegerField(blank=True, null=True)
+    number3 = models.BigIntegerField(blank=True, null=True)
+
 class setup(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     d_id = models.OneToOneField(device, on_delete=models.CASCADE)
     s_id = models.CharField(unique = True, max_length=20)
-    trigger = models.CharField(unique=True, max_length=20)
-    color = models.CharField(max_length=15)
-    ring = models.IntegerField(null=False)
-    message = models.TextField(max_length=999)
+    trigger = models.CharField(unique=True, max_length=20, null=True)
+    color = models.CharField(max_length=15, null=True)
+    ring = models.IntegerField(null=True)
+    location = models.CharField(null=True, max_length=199)
+    song = models.IntegerField(default=0, null=True)
+    emoji = models.IntegerField(default=0, null=True)
+    message = models.TextField(max_length=999, blank=True)
+
+
+class userimages(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
+    images = models.ImageField(upload_to='profile_picture', blank=True)
+
+
+class friendadd(models.Model):
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    emailtest = EmailField()
+    email = models.CharField(primary_key=True, max_length=100)
+
+class friendtoaccess(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name1 = models.CharField(max_length=20, blank=True)
+    email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
+
 
 class healthrecord(models.Model):
     d_id = models.OneToOneField(device, on_delete=models.CASCADE)

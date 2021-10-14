@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from drf_braces.serializers.form_serializer import FormSerializer
 from newapp.forms import UserRegisterForm
-from newapp.models import device, setup, healthrecord, ssidPassword
+from newapp.models import *
 # from myapp.models import place_type,floor,room,device,deviceStatus,emergencyNumber,sensors
 
 class deviceSerializers(serializers.ModelSerializer):
@@ -41,6 +41,32 @@ class user_register(FormSerializer):
 class ssidPasswordSerializers(serializers.ModelSerializer):
     class Meta(object):
         model = ssidPassword
-        fields = ('ssid','password')
-        depth = 3
+        fields = ('ssid1','password1','ssid2','password2','ssid3','password3',)
+
+class userprofileimagesSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = userimages
+        fields = '__all__'
+
+
+class friendaddSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = friendadd
+        fields = ('emailtest',)
+
+class friendaccessSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = friendadd
+        fields = '__all__'
+
+
+class friendtoaccessSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = friendtoaccess
+        fields = '__all__'
+
+class friendtoaccessgetSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = friendtoaccess
+        fields = ('name','email')
         

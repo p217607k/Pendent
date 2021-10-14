@@ -26,8 +26,21 @@ urlpatterns = [
     path('', include('newapp.urls')),
     path('api-token-auth/',views.obtain_auth_token,name='api-tokn-auth'),
 
+    # get user id
+
+    path('getuideveryone/', newapp_view.useridList),
+
     path('device/',newapp_view.device_list),
     path('setupthings/',newapp_view.setup_list),
     path('findhealth/',newapp_view.health_list),
     path('ssidpassword/',newapp_view.ssidpass_list),
+
+    
+    # profile picture
+    path('profilepicture/',newapp_view.profoto),
+
+    # friends in need friend indeed
+
+    path('friendsuaccess/', newapp_view.friendsuaccess),
+    path('friendtoaddlist/', newapp_view.friendtoaddList),
 ]
