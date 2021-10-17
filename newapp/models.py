@@ -1,11 +1,12 @@
 from django.db import models
-from django.conf import settings
+from django.conf import Settings, settings
 from django.db.models.signals import post_save
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.db.models.fields import CharField, EmailField
+from newapp.utils import defprofoto
 
 
 class allDevices(models.Model):
@@ -13,6 +14,12 @@ class allDevices(models.Model):
 
     def __str__(self):
         return self.d_id
+
+class allEmail(models.Model):
+    email = models.CharField(max_length=50, primary_key=True)
+
+    def __str__(self):
+        return self.email
 
 
 class device(models.Model):
@@ -42,7 +49,7 @@ class setup(models.Model):
 
 class userimages(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,primary_key=True)
-    images = models.ImageField(upload_to='profile_picture', blank=True)
+    file = models.CharField(max_length=499999, blank=True, default=defprofoto())
 
 
 class friendadd(models.Model):
@@ -50,10 +57,24 @@ class friendadd(models.Model):
     emailtest = EmailField()
     email = models.CharField(primary_key=True, max_length=100)
 
+    def __str__(self):
+        return self.email
+
 class friendtoaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name1 = models.CharField(max_length=20, blank=True)
+    email1 = models.CharField(max_length=50, blank=False)
     email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
+    trigger = models.IntegerField(default=0)
+
+
+class partner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email1 = models.CharField(max_length=50, blank=False)
+    email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
+    trigger = models.IntegerField(default=0)
+
+    def __str__(self) -> str:
+        return self.email
 
 
 class healthrecord(models.Model):

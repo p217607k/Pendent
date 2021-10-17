@@ -9,6 +9,10 @@ admin.site.register(healthrecord)
 admin.site.register(ssidPassword)
 admin.site.register(emergencyNumber)
 admin.site.register(userimages)
+admin.site.register(allEmail)
+admin.site.register(friendadd)
+admin.site.register(friendtoaccess)
+admin.site.register(partner)
 
 # admin.site.register(sendRecivedMeassages)
 

@@ -94,6 +94,12 @@ def register_flutter(request):
     # print(form)
     if form.is_valid():
         form.save()
+        # print(form.email)
+        print((form.data["email"]))
+        e  = form.data["email"]
+        d = allEmail.objects.create(email = e)
+        d.save()
+        print("I am save.")
         return JsonResponse({"Registration":"Done"})
     else :
         # return JsonResponse({"Password is too similar"})
@@ -298,78 +304,53 @@ def health_list(request):
                 return Response("data updated", status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@csrf_exempt
-# @renderer_classes((JSONRenderer))
+                                  
 @api_view(["GET","POST","PUT","DELETE"])
-def profoto(request):
-    if request.method == "POST":
-        form = ImageForm(request.POST, request.FILES)
-    # print(request.POST)
-    # print(form)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({"Image Uploaded":"Successfully"})
-        else :
-        # return JsonResponse({"Password is too similar"})
-            print(form.errors.as_json())
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR ,data=form.errors.as_json())
-
-    elif request.method == "GET":
-        device_data = userimages.objects.filter(user = request.GET['user'])
-        roomJson = userprofileimagesSerializers(device_data, many=True)
+def profileimage(request):
+    if request.method == "GET":
+        device_data = userimages.objects.filter(user=request.user)
+        roomJson = proimgSerializers(device_data, many=True)
         dd = roomJson.data[:]
-        print(dd)
         return Response(dd[0])
 
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        serializer = proimgSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("image uploded.", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     elif request.method == "PUT":
-        print("qwerty")
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['user']
+        try:
+            device_object=userimages.objects.get(user=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = proimgSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Pic updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == "DELETE":
+        print("exc")
         device_data = userimages.objects.filter(user = request.GET['user'])
         device_data.delete()
-        form = ImageForm(request.POST, request.FILES)
-        # print(request.POST)
-        # print(form)
-        if form.is_valid():
-            form.save()
-            return JsonResponse({"Image Updated":"Successfully"})
+        return Response("Image Deleted.")
+
+
 
 @api_view(["GET","POST","PUT","DELETE"])
 def friendsuaccess(request):
-    # if request.method=="GET":
-    #     data = subuseraccess.objects.filter(user=request.user, p_id=request.GET['p_id'])
-    #     placeJson = floorSerializers(data, many=True)
-    #     print(data)
-    #     return Response(placeJson.data)
-    #     # return Response(device_data)
 
     if request.method == "POST":
         # received_json_data=json.loads(request.body)
         serializer = friendaccessSerializers(data=request.data)
-        # email12 = subuseraccess.objects.filter()
-        # subJson1 = subuseremailSerializers(email12, many=True)
-        # # success = False
-        # for x in list(subJson1.data):
-        #     xc = x["emailtest"]
-        #     print(xc)
-        # xc = ["emailtest"]
-        # if User.objects.filter(email=xc).exists():
-        #     print("ssucessss")
-        #     if serializer.is_valid():
-        #         serializer.save()
-        #         return Response("data created", status=status.HTTP_201_CREATED)
-        # email1 = subuseraccess.objects.filter(user=request.GET['user'])
-        # email1 = "ppp@gm.com"
-        # if User.objects.filter(email=email1).exists():
-        # email = User.objects.filter(user=request.GET['email'])
-        # if User.objects.get(user=request.GET['email']).exists():
         if serializer.is_valid():
             print("xtz")
-            # email1 = "ppp@gm.com"
-            # if User.objects.filter(email=email1).exists():
-        # email1 = User.objects.get(user=request.GET['email'])
-        # print(email1)
-        # email1 = "pankajpalariya21@gmai.com"
-        # email1 = request.POST['email']
+
             serializer.save()
             # email = subuseraccess.objects.filter(user=request.GET['email'])
             # print(email)
@@ -383,13 +364,7 @@ def friendsuaccess(request):
                 # print(subJson1.data)
             if User.objects.filter(email=xc).exists():
                 # user1 = User.objects.filter(name__contains='email')
-                # user1 = User.objects.all()
-                # print(user1)
-                # userJson = userSerializers(user1, many=True)
-                # main = list(userJson.data)
-                # print(main)
-                    # print(subuseraccess.emailtest)
-                    # print(email)
+              
                 success = Response("email added as a SUB-USER", status=status.HTTP_201_CREATED)
             else:
                 xcdelete = friendadd.objects.last()
@@ -492,4 +467,63 @@ def ssidList(request):
         if serializer.is_valid():
             serializer.save()
             return Response("data updated", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+            ########################  Partner Api   ###############
+
+@api_view(["GET","POST","PUT","DELETE"])
+def connectpartner(request):
+    if request.method == "GET":
+        device_data = partner.objects.filter(user=request.user)
+        roomJson = partnersSerializers(device_data, many=True)
+        dd = roomJson.data[:]
+        return Response(dd[0])
+
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        serializer = partnersSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Partner added.Wait to confirm.", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['user']
+        try:
+            device_object=partner.objects.get(user=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = partnersSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("partner changed.", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == "DELETE":
+        print("exc")
+        device_data = partner.objects.filter(user = request.GET['user'])
+        device_data.delete()
+        return Response("Partner Deleted.")
+
+@api_view(["GET","POST","PUT"])
+def searchrequests(request):
+    if request.method == "GET":
+        device_data = partner.objects.filter(email=request.GET["email"])
+        roomJson = partnersSerializers(device_data, many=True)
+        # dd = roomJson.data[:]
+        return Response(roomJson.data)
+    
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['id']
+        try:
+            device_object=partner.objects.get(id=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = partnersSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Successful...", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

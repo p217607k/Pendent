@@ -1,9 +1,20 @@
+from django.db.models import fields
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from drf_braces.serializers.form_serializer import FormSerializer
 from newapp.forms import UserRegisterForm
 from newapp.models import *
 # from myapp.models import place_type,floor,room,device,deviceStatus,emergencyNumber,sensors
+
+class getuseremailSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('email',)
+
+# class partneralldataSerializers(serializers.ModelSerializer):
+#     class Meta:
+#         model = partner
+#         fields = '__all__'
 
 class deviceSerializers(serializers.ModelSerializer):
     class Meta:
@@ -82,3 +93,18 @@ class ssidPasswordSerializers(serializers.ModelSerializer):
         model = ssidPassword
         fields = '__all__'
         
+class proimgSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = userimages
+        fields = '__all__'
+
+class allemailsSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = allEmail
+        fields = '__all__'
+
+
+class partnersSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = partner
+        fields = '__all__'

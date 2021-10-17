@@ -37,7 +37,7 @@ urlpatterns = [
 
     
     # profile picture
-    path('profilepicture/',newapp_view.profoto),
+    path('profilepicture/',newapp_view.profileimage),
 
     # emer number & ssid pass
 
@@ -48,4 +48,12 @@ urlpatterns = [
 
     path('friendsuaccess/', newapp_view.friendsuaccess),
     path('friendtoaddlist/', newapp_view.friendtoaddList),
+
+    # partner connection
+
+    path('connecttopartner/', newapp_view.connectpartner),
+
+    # search friend requests with emails
+
+    path('searchfrequests/', newapp_view.searchrequests),
 ]
