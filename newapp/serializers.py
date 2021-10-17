@@ -76,10 +76,10 @@ class friendtoaccessSerializers(serializers.ModelSerializer):
         model = friendtoaccess
         fields = '__all__'
 
-class friendtoaccessgetSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = friendtoaccess
-        fields = ('name','email')
+# class friendtoaccessgetSerializers(serializers.ModelSerializer):
+#     class Meta:
+#         model = friendtoaccess
+#         fields = ('name','email')
 
 
 class emernumberSerializers(serializers.ModelSerializer):

@@ -179,7 +179,7 @@ def ssidpass_list(request):
 @permission_classes([IsAuthenticated])
 def device_list(request):
     if request.method=="GET":
-        device_data = device.objects.filter(user = request.user,d_id=request.GET['d_id'])
+        device_data = device.objects.filter(user = request.user)
         floorJson = deviceSerializers(device_data, many=True)
         # return Response(floorJson.data)
         dd = floorJson.data[:]
@@ -344,7 +344,6 @@ def profileimage(request):
 
 @api_view(["GET","POST","PUT","DELETE"])
 def friendsuaccess(request):
-
     if request.method == "POST":
         # received_json_data=json.loads(request.body)
         serializer = friendaccessSerializers(data=request.data)
@@ -365,7 +364,7 @@ def friendsuaccess(request):
             if User.objects.filter(email=xc).exists():
                 # user1 = User.objects.filter(name__contains='email')
               
-                success = Response("email added as a SUB-USER", status=status.HTTP_201_CREATED)
+                success = Response("email added in friend model to use in friendlist", status=status.HTTP_201_CREATED)
             else:
                 xcdelete = friendadd.objects.last()
                 print(xcdelete)
@@ -385,8 +384,8 @@ def friendsuaccess(request):
 @api_view(["GET","POST","PUT"])
 def friendtoaddList(request):
     if request.method=="GET":
-        data = friendtoaccess.objects.filter(email=request.GET['email'])
-        placeJson = friendtoaccessgetSerializers(data, many=True)
+        data = friendtoaccess.objects.filter(user=request.user)
+        placeJson = friendtoaccessSerializers(data, many=True)
         print(data)
         return Response(placeJson.data)
         # return Response(device_data)
@@ -397,9 +396,45 @@ def friendtoaddList(request):
         if serializer.is_valid():
             serializer.save()
             email1 = friendtoaccess.objects.filter()
-            subJson1 = friendaccessSerializers(email1, many=True)
+            subJson1 = friendtoaccessSerializers(email1, many=True)
             xc1 = list(subJson1.data)[-1]["email"]
-            return Response("Added "+xc1, status=status.HTTP_201_CREATED)
+            return Response("Sent request to: "+xc1, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['user']
+        try:
+            device_object=friendtoaccess.objects.get(user=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = friendtoaccessSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("changed.....", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    ################ Get friend requests  ###########
+
+@api_view(["GET","POST","PUT"])
+def acceptingfriendtoaddList(request):
+    if request.method=="GET":
+        data = friendtoaccess.objects.filter(email=request.GET['email'])
+        placeJson = friendtoaccessSerializers(data, many=True)
+        print(data)
+        return Response(placeJson.data)
+    
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        print(received_json_data)
+        device_id=received_json_data['id']
+        try:
+            device_object=friendtoaccess.objects.get(id=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = friendtoaccessSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Successful...", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

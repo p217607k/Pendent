@@ -63,7 +63,7 @@ class friendadd(models.Model):
 class friendtoaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     email1 = models.CharField(max_length=50, blank=False)
-    email = models.ManyToManyField(friendadd, default="ok")
+    email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
     trigger = models.IntegerField(default=0)
 
 
