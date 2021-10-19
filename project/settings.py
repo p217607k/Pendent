@@ -27,7 +27,7 @@ SECRET_KEY = ')_yw9p11v@8!)glovf-3hxn2ewra&6*vqc!5r%9$5&w+ky#ueu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.43.36']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'channels',
     'reset_migrations',
     'rest_framework.authtoken',
 ]
@@ -84,6 +85,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
+
+ASGI_APPLICATION = 'project.asgi.application'
 
 
 # Database
