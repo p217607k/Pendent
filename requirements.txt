@@ -155,10 +155,6 @@ twitter==1.18.0
 twitterbot==0.3.4
 txaio==20.4.1
 tzlocal==2.1
-ubuntu-advantage-tools==20.3
-ubuntu-drivers-common==0.0.0
-ufw==0.36
-unattended-upgrades==0.1
 urllib3==1.23
 usb-creator==0.3.7
 validators==0.18.2
@@ -168,8 +164,3 @@ webdriver-manager==3.4.2
 websocket==0.2.1
 websocket-client==1.2.1
 websockets==10.0
-whichcraft==0.6.1
-whitenoise==5.3.0
-xkit==0.0.0
-zope.event==4.5.0
-zope.interface==5.1.0
