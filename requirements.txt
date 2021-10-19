@@ -29,7 +29,6 @@ crayons==0.4.0
 cryptography==3.1.1
 daphne==3.0.2
 dateutils==0.6.12
-dbus-python==1.2.16
 decorator==4.4.2
 dj-database-url==0.5.0
 Django==3.1.1
@@ -105,9 +104,7 @@ pyasn1-modules==0.2.8
 pycairo==1.16.2
 pycparser==2.20
 pycryptodome==3.4.3
-pycups==1.9.73
 Pygments==2.3.1
-PyGObject==3.36.0
 PyHamcrest==2.0.2
 pyinstaller==4.5.1
 pyinstaller-hooks-contrib==2021.3
