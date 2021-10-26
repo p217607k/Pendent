@@ -26,6 +26,8 @@ urlpatterns = [
     path('', include('newapp.urls')),
     path('api-token-auth/',views.obtain_auth_token,name='api-tokn-auth'),
 
+    path('getthedataofuser/',newapp_view.userdataList),
+
     # get user id
 
     path('getuideveryone/', newapp_view.useridList),

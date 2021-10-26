@@ -52,22 +52,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import permissions
 import http.client
 import ast
-# import pyrebase
-
-# config={
-#     "apiKey": "AIzaSyBlKT-0XpVHAP-YqpAgEH93fmN6AyIds_s",
-#     "authDomain": "genorion-79a43.firebaseapp.com",
-#     "databaseURL": "https://genorion-79a43-default-rtdb.firebaseio.com/",
-#     "projectId": "genorion-79a43",
-#     "storageBucket": "genorion-79a43.appspot.com",
-#     "messagingSenderId": "109228463289",
-#     "appId": "1:109228463289:web:45b5d3e15401c007483768",
-#     "measurementId": "G-WM79VJNKRH"
-# }
-# firebase = pyrebase.initialize_app(config)
-# auth = firebase.auth()
-# database = firebase.database()
-
 
 conn = http.client.HTTPConnection("2factor.in")
 
@@ -79,10 +63,61 @@ def useridList(request):
         print(current_user.id)
         return Response(current_user.id)
 
+def room(request, room_name):
+  username = request.GET.get('username', 'Anonymous')
+
+  return render(request, 'chat/room.html', {'room_name': room_name, 'username': username})
+
 # Create your views here.
 
+@api_view(["GET"])
+def userdataList(request):
+    if request.method=="GET":
+        device_data = User.objects.filter(id=request.GET['id'])
+        nameJson = userlogingetdataSerializers(device_data, many=True)
+        # return Response(nameJson.data)
+        dd = list(nameJson.data)[0]
+        print(dd)
+        return Response(dd)
+
+
 def index(request):
-    return render(request, 'index.html')
+    # channel_layer = get_channel_layer()
+    # async_to_sync(channel_layer.group_send)(
+    #     't_cons_group', {
+    #         'type': 'send'
+    #     }
+    # )
+    items = []
+        # current_user = request.user
+        # uuiid = current_user.id
+    a = healthrecord.objects.all()
+    tagsJson = recordhealthSerializers(a, many=True)
+    for i in range(len(tagsJson.data)):
+        tag = tagsJson.data[i]
+
+        print(tag)
+        
+        # listname = tagsJson.data[i]["listname"]
+        # userid = tagsJson.data[i]["userid"]
+        # if tag == data1 or data1=="All":
+        #     if userid == current_user.id:
+                # if listname == data2:
+        items.append(tag)
+    print(items)
+    context = {
+        'items' : items,
+    }
+        
+    # data = healthrecord.objects.all()
+    # print(list(data)[0])
+    # stu = {
+    #     "hre": data
+    # }
+
+    # print(dict(stu))
+    return render(request, "ind.html", context)
+    # return render(request, 'index.html')
 
 
 @csrf_exempt

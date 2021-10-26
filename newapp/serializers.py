@@ -6,6 +6,12 @@ from newapp.forms import UserRegisterForm
 from newapp.models import *
 # from myapp.models import place_type,floor,room,device,deviceStatus,emergencyNumber,sensors
 
+class userlogingetdataSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'email','first_name',)
+
+
 class getuseremailSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
