@@ -651,3 +651,5 @@ def scheduleSetup(request):
                     print("matched")
                     data2.delete()
                     print("delete")
+
+

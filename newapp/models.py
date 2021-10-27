@@ -50,7 +50,9 @@ class emergencyNumber(models.Model):
 
 class setup(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    email1 = models.CharField(max_length=50, blank=False)
     username = models.ForeignKey(allusernames, on_delete=models.CASCADE)
+    # email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
     date = models.DateField(default="2000-01-01", null=True)
     timing = models.TimeField(default='00:00')
     s_id = models.CharField(unique=True, max_length=20)
@@ -62,12 +64,22 @@ class setup(models.Model):
     emoji = models.IntegerField(default=0, null=True)
     message = models.TextField(max_length=999, blank=True)
 
+class receivedsetup(models.Model):
+    username = models.ForeignKey(allusernames, on_delete=models.CASCADE, primary_key=True)
+    email = models.CharField(max_length=50, blank=False)
+    s_id = models.CharField(unique=True, max_length=20)
+    trigger = models.CharField(unique=True, max_length=20, null=True)
+    color = models.CharField(max_length=15, null=True)
+    ring = models.IntegerField(null=True)
+    location = models.CharField(null=True, max_length=199)
+    song = models.IntegerField(default=0, null=True)
+    emoji = models.IntegerField(default=0, null=True)
+    message = models.TextField(max_length=999, blank=True)
+
 
 class userimages(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True)
-    file = models.CharField(
-        max_length=499999, blank=True, default=defprofoto())
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    file = models.CharField(max_length=499999, blank=True, default=defprofoto())
 
 
 class friendadd(models.Model):
@@ -88,12 +100,12 @@ class friendtoaccess(models.Model):
 
 class partner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email1 = models.CharField(max_length=50, blank=False)
-    email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
+    email1 = models.CharField(max_length=50, blank=False) #send by this
+    email = models.ForeignKey(allEmail, on_delete=models.CASCADE) #sending to this email
     trigger = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return self.email
+        return self.email1
 
 
 class healthrecord(models.Model):

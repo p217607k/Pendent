@@ -120,3 +120,8 @@ class partnersSerializers(serializers.ModelSerializer):
     class Meta:
         model = partner
         fields = '__all__'
+
+class recivedsetupSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = receivedsetup
+        fields = '__all__'

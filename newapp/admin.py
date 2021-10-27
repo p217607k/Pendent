@@ -15,6 +15,7 @@ admin.site.register(friendadd)
 admin.site.register(friendtoaccess)
 admin.site.register(partner)
 admin.site.register(allDevices)
+admin.site.register(receivedsetup)
 
 # admin.site.register(sendRecivedMeassages)
 
