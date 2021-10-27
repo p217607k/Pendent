@@ -52,6 +52,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework import permissions
 import http.client
 import ast
+from requests.api import request
 
 conn = http.client.HTTPConnection("2factor.in")
 
@@ -132,8 +133,14 @@ def register_flutter(request):
         # print(form.email)
         print((form.data["email"]))
         e  = form.data["email"]
+        # em = User(email = e)
+        # print("1" , em)
         d = allEmail.objects.create(email = e)
         d.save()
+        u = form.data["username"]
+        # u = User(username = u)
+        d1 = allusernames.objects.create(username = u)
+        d1.save()
         print("I am save.")
         return JsonResponse({"Registration":"Done"})
     else :
@@ -597,3 +604,50 @@ def searchrequests(request):
             serializer.save()
             return Response("Successful...", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+def scheduleSetup(request):
+    print("going")
+    now = datetime.now()
+    year = '{:02d}'.format(now.year)
+    month = '{:02d}'.format(now.month)
+    day = '{:02d}'.format(now.day)
+    hour = '{:02d}'.format(now.hour)
+    minute = '{:02d}'.format(now.minute)
+    # second = '{:02d}'.format(now.second)
+    day_month_year = '{}-{}-{}'.format(year, month, day)
+    hour_minute_second = '{}:{}:00'.format(hour, minute)
+    print(day_month_year)
+    print(hour_minute_second)
+    data1 = setup.objects.all()
+    data1Json = allsetupSerializers(data1, many=True)
+    for data in data1Json.data:
+        _date = data["date"]
+        _timing = data["timing"]
+        _id = data['id']
+        var1 = data['pin1Status']
+        var2 = data['pin2Status']
+        d_idvar = data['d_id']
+        print(var1)
+
+    # dataJson = pinscheduleTimeSerializers(data1, many=True)
+    if _date<=day_month_year and _timing<=hour_minute_second:
+            print("nono1")
+            if setup.objects.filter(id=_id):
+                print("nono2")
+                if (var1 != None):
+                    print("nono3")
+                    BASE_URL = f'http://127.0.0.1:8000/getpostdevicePinStatus/?d_id={d_idvar}'#'https://genorion1.herokuapp.com/getpostdevicePinStatus/?d_id=DIDM12932021AAAAAA'
+                    print("xxxxxxx1")
+                    token = "07f6fc6f36a7f5205236496b9816c08db09c29e5"
+
+                    headers =  {'content-type' : 'application/json',
+                                'Authorization': "Token {}".format(token)}
+                    data = {"put":"yes",'d_id':d_idvar,'pin1Status':var1}
+                    print("xxx1")
+                    auth_response = requests.post(BASE_URL, headers=headers, data=json.dumps(data))
+                    auth_response.text
+                    print(auth_response)
+                    data2 = setup.objects.filter(id=_id)
+                    print("matched")
+                    data2.delete()
+                    print("delete")

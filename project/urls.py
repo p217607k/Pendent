@@ -56,10 +56,7 @@ urlpatterns = [
     path('acceptingfriendtoaddlist/', newapp_view.acceptingfriendtoaddList),
 
     # partner connection
-
     path('connecttopartner/', newapp_view.connectpartner),
-
     # search friend requests with emails
-
     path('searchfrequests/', newapp_view.searchrequests),
 ]

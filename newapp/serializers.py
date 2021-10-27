@@ -28,6 +28,12 @@ class deviceSerializers(serializers.ModelSerializer):
         # fields = ('d_id', 'd_name')
         fields = '__all__'
 
+class allsetupSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = setup
+        # fields = ('d_id', 'd_name')
+        fields = '__all__'
+
 class setupSerializers(serializers.ModelSerializer):
     class Meta:
         model = setup

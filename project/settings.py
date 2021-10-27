@@ -27,7 +27,7 @@ SECRET_KEY = ')_yw9p11v@8!)glovf-3hxn2ewra&6*vqc!5r%9$5&w+ky#ueu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.107']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -44,7 +44,14 @@ INSTALLED_APPS = [
     'channels',
     'reset_migrations',
     'rest_framework.authtoken',
+    'django_celery_beat',
+    'django_celery_results',
+    'corsheaders',
+    
 ]
+
+# AUTH_USER_MODEL = "project.User"
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -55,6 +62,18 @@ REST_FRAMEWORK = {
                 'rest_framework.permissions.AllowAny',
     ],
 }
+
+from celery import Celery
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_ENABLE_UTC = True
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -92,11 +111,10 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("192.168.0.107", 6379)],
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }
-
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -104,7 +122,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pendent',
+        'NAME': 'penden',
         'USER': 'postgres',
         'PASSWORD': 'root',
         'HOST': 'localhost',

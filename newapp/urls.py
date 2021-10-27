@@ -8,7 +8,7 @@ app_name = 'newapp'
 urlpatterns = [
 
     path('', views.index, name='homepage'),
-    path('/', views.room, name='room'),
+    # path('/', views.room, name='room'),
     path('registertodent',views.register_flutter,name='flutter-register'),
     path('ckeckingmail',views.checkemail,name='email-check'),
     path('ckeckingpassword',views.checkpassword,name='pass-check'),
