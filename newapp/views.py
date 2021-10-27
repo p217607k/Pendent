@@ -302,6 +302,27 @@ def setup_list(request):
                 return Response("data updated", status=status.HTTP_201_CREATED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(["GET", "POST"])
+@permission_classes([IsAuthenticated])
+def setup_received(request):
+    if request.method=="GET":
+
+        # data = request.data
+        # user_object = User.objects.get(email=data['email'])
+        floor_data = receivedsetup.objects.filter(username=request.GET ['username'])
+        floorJson = recivedsetupSerializers(floor_data, many=True)
+        # return Response(floorJson.data)
+        # dd = floorJson.data[:]
+        return Response(floorJson.data)
+
+    
+    elif request.method == "POST":
+        serializer = recivedsetupSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Received to the user...!!!", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
