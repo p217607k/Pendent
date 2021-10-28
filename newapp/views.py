@@ -99,7 +99,7 @@ def nameWemail(request):
 @api_view(["GET"])
 def allemail(request):
     if request.method == 'GET':
-        data1 = allEmail.objects.filter(user=request.user)
+        data1 = allEmail.objects.filter(email = request.GET['email'])
         dataJson = allemailsSerializers(data1, many=True)
 
         dd = dataJson.data[:]
