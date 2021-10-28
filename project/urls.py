@@ -30,6 +30,9 @@ urlpatterns = [
     path('getthedataofuser/',newapp_view.userdataList),#with user id
     path('getthenameofuserwemail/',newapp_view.nameWemail),#with email id
 
+    # get all emails
+    path('getallemailswithuser/', newapp_view.allemail),
+
     # get user id
     path('getuideveryone/', newapp_view.useridList),
 
@@ -68,4 +71,9 @@ urlpatterns = [
 
     #schedule setup  ############ URL ############
     path('schedulereceived', newapp_view.scheduleSetup),
+
+    #### family connections 
+    path('addfamilymenber/', newapp_view.connectmyfamily),
+    #### accepting request and get d_id too for getting health data
+    path('acceptgetfamilymenber/', newapp_view.searchrequestsfamily),
 ]

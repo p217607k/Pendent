@@ -87,6 +87,11 @@ class friendaccessSerializers(serializers.ModelSerializer):
         model = friendadd
         fields = '__all__'
 
+class familyaddaccessSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = familymanaccess
+        fields = '__all__'
+
 
 class friendtoaccessSerializers(serializers.ModelSerializer):
     class Meta:
@@ -129,4 +134,10 @@ class partnersSerializers(serializers.ModelSerializer):
 class recivedsetupSerializers(serializers.ModelSerializer):
     class Meta:
         model = receivedsetup
+        fields = '__all__'
+
+
+class allemailsSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = allEmail
         fields = '__all__'

@@ -95,6 +95,18 @@ def nameWemail(request):
         dd = dataJson.data[:]
         return Response(dd[0])
 
+## get all emails
+@api_view(["GET"])
+def allemail(request):
+    if request.method == 'GET':
+        data1 = allEmail.objects.filter(user=request.user)
+        dataJson = allemailsSerializers(data1, many=True)
+
+        dd = dataJson.data[:]
+        return Response(dd[0])
+
+
+
 
 def index(request):
     # channel_layer = get_channel_layer()
@@ -639,6 +651,65 @@ def searchrequests(request):
             serializer.save()
             return Response("Successful...", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+  ############ family Api  ###########
+
+@api_view(["GET","POST","PUT","DELETE"])
+def connectmyfamily(request):
+    if request.method == "GET":
+        device_data = familymanaccess.objects.filter(user=request.user)
+        roomJson = familyaddaccessSerializers(device_data, many=True)
+        dd = roomJson.data[:]
+        return Response(dd[0])
+
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        serializer = familyaddaccessSerializers(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Partner added.Wait to confirm.", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['user']
+        try:
+            device_object=familymanaccess.objects.get(user=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = familyaddaccessSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("partner changed.", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == "DELETE":
+        print("exc")
+        device_data = familymanaccess.objects.filter(user = request.GET['user'])
+        device_data.delete()
+        return Response("Partner Deleted.")
+
+@api_view(["GET","POST","PUT"])
+def searchrequestsfamily(request):
+    if request.method == "GET":
+        device_data = familymanaccess.objects.filter(email=request.GET["email"])
+        roomJson = familyaddaccessSerializers(device_data, many=True)
+        # dd = roomJson.data[:]
+        return Response(roomJson.data)
+    
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['id']
+        try:
+            device_object=familymanaccess.objects.get(id=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = familyaddaccessSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Successful...", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 def scheduleSetup(request):
     print("going")

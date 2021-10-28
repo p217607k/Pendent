@@ -101,6 +101,7 @@ class familymanaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     email1 = models.CharField(max_length=50, blank=False)
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
+    d_id = models.ForeignKey(device, on_delete=models.CASCADE, default=0)
     trigger = models.IntegerField(default=0)
 
 
