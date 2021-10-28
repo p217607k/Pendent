@@ -39,11 +39,6 @@ class allsetupSerializers(serializers.ModelSerializer):
         # fields = ('d_id', 'd_name')
         fields = '__all__'
 
-class setupSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = setup
-        fields = ('id','trigger','color','ring','message')
-        depth = 1
 
 class setuppSerializers(serializers.ModelSerializer):
     class Meta:

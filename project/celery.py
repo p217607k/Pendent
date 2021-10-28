@@ -25,14 +25,15 @@ app.autodiscover_tasks()
 def debug_task(self):
     print("HELLO Pankaj!!!!!!")
 
+# shedule setup
 @app.task(bind=True)
-def mytk(self):
-    url = 'http://127.0.0.1:8000/schedulepinstimes/'
+def autoupdtsetup(self):
+    url = 'http://127.0.0.1:8000/schedulereceived'
 
     while True:
         print("refreshing...")
         webbrowser.open(url, new=0)
-        sleep(25)
+        sleep(10)
 
 @app.task(bind=True)
 def debug_task(self):

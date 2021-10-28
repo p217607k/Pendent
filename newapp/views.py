@@ -83,6 +83,7 @@ def userdataList(request):
         print(dd)
         return Response(dd)
 
+
 @api_view(["GET"])
 def nameWemail(request):
     if request.method == 'GET':
@@ -277,17 +278,17 @@ def setup_list(request):
 
         # data = request.data
         # user_object = User.objects.get(email=data['email'])
-        floor_data = setup.objects.filter(user = request.user,d_id=request.GET ['d_id'])
-        floorJson = setupSerializers(floor_data, many=True)
-        # return Response(floorJson.data)
-        dd = floorJson.data[:]
-        return Response(dd[0])
+        floor_data = setup.objects.filter(user = request.user)
+        floorJson = setuppSerializers(floor_data, many=True)
+        return Response(floorJson.data)
+        # dd = floorJson.data[:]
+        # return Response(dd[0])
 
     
     elif request.method == "POST":
         received_json_data=json.loads(request.body)
         if received_json_data['put']!='yes':
-            serializer = setupSerializers(data=request.data)
+            serializer = setuppSerializers(data=request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response("data created", status=status.HTTP_201_CREATED)
@@ -302,7 +303,7 @@ def setup_list(request):
 
             # del request.data['d_id']
             # print(request.data)
-            serializer = setupSerializers(device123_object, data=request.data)
+            serializer = setuppSerializers(device123_object, data=request.data)
             # print(serializer)
             # device_object=device.objects.filter(d_id=device_id)
             # print(device_object)
