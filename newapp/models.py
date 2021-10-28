@@ -57,7 +57,7 @@ class setup(models.Model):
     timing = models.TimeField(default='00:00')
     s_id = models.CharField(unique=True, max_length=20)
     trigger = models.CharField(unique=True, max_length=20, null=True)
-    color = models.CharField(max_length=15, null=True)
+    color = models.CharField(max_length=50, null=True)
     ring = models.IntegerField(null=True)
     location = models.CharField(null=True, max_length=199)
     song = models.IntegerField(default=0, null=True)
@@ -69,7 +69,7 @@ class receivedsetup(models.Model):
     email = models.CharField(max_length=50, blank=False)
     s_id = models.CharField(unique=True, max_length=20)
     trigger = models.CharField(unique=True, max_length=20, null=True)
-    color = models.CharField(max_length=15, null=True)
+    color = models.CharField(max_length=50, null=True)
     ring = models.IntegerField(null=True)
     location = models.CharField(null=True, max_length=199)
     song = models.IntegerField(default=0, null=True)
@@ -95,6 +95,12 @@ class friendtoaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     email1 = models.CharField(max_length=50, blank=False)
     email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
+    trigger = models.IntegerField(default=0)
+
+class familymanaccess(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    email1 = models.CharField(max_length=50, blank=False)
+    email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
     trigger = models.IntegerField(default=0)
 
 
