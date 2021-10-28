@@ -77,3 +77,6 @@ urlpatterns = [
     #### accepting request and get d_id too for getting health data
     path('acceptgetfamilymenber/', newapp_view.searchrequestsfamily),
 ]
+
+
+admin.site.site_header = 'Pendent Database'

@@ -39,6 +39,9 @@ class device(models.Model):
     d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
     d_name = models.CharField(max_length=15)
 
+    def __str__(self):
+        return self.d_id
+
 
 class emergencyNumber(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -47,6 +50,8 @@ class emergencyNumber(models.Model):
     number2 = models.BigIntegerField(blank=True, null=True)
     number3 = models.BigIntegerField(blank=True, null=True)
 
+    def __str__(self):
+        return self.d_id
 
 class setup(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -64,6 +69,9 @@ class setup(models.Model):
     emoji = models.IntegerField(default=0, null=True)
     message = models.TextField(max_length=999, blank=True)
 
+    def __str__(self):
+        return self.user
+
 class receivedsetup(models.Model):
     username = models.CharField(max_length=50)
     email = models.CharField(max_length=50, blank=False)
@@ -76,10 +84,16 @@ class receivedsetup(models.Model):
     emoji = models.IntegerField(default=0, null=True)
     message = models.TextField(max_length=999, blank=True)
 
+    def __str__(self):
+        return self.username
+
 
 class userimages(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     file = models.CharField(max_length=499999, blank=True, default=defprofoto())
+
+    def __str__(self):
+        return self.user
 
 
 class friendadd(models.Model):
@@ -97,12 +111,18 @@ class friendtoaccess(models.Model):
     email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
     trigger = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.user
+
 class familymanaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     email1 = models.CharField(max_length=50, blank=False)
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
-    d_id = models.ForeignKey(device, on_delete=models.CASCADE, default=0)
+    d_id = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0)
     trigger = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user
 
 
 class partner(models.Model):
@@ -112,7 +132,7 @@ class partner(models.Model):
     trigger = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return self.email1
+        return self.user
 
 
 class healthrecord(models.Model):
@@ -122,6 +142,9 @@ class healthrecord(models.Model):
     healthS2 = models.FloatField(blank=True, null=True)
     healthS3 = models.FloatField(blank=True, null=True)
     healthS4 = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return self.d_id
 
 
 class ssidPassword(models.Model):
@@ -133,6 +156,8 @@ class ssidPassword(models.Model):
     ssid3 = models.CharField(unique=True, max_length=15)
     password3 = models.CharField(null=False, max_length=50)
 
+    def __str__(self):
+        return self.d_id
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
