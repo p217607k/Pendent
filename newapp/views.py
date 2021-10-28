@@ -676,9 +676,9 @@ def scheduleSetup(request):
             #     print("nono2")
             if (username != None):
                 print("nono3")
-                BASE_URL = f'http://127.0.0.1:8000/receivethesetup/'#'https://genorion1.herokuapp.com/getpostdevicePinStatus/?d_id=DIDM12932021AAAAAA'
+                BASE_URL = f'https://pendant.herokuapp.com/receivethesetup/'#'https://genorion1.herokuapp.com/getpostdevicePinStatus/?d_id=DIDM12932021AAAAAA'
                 print("xxxxxxx1")
-                token = "42006499b5c2b00800576bc2f20b848ac63b44b1"
+                token = "f2dff96c0f59bd56ad95a9d38c2b455cca2c5845"
 
                 headers =  {'content-type' : 'application/json',
                             'Authorization': "Token {}".format(token)}
