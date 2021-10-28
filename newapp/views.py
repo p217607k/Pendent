@@ -86,11 +86,11 @@ def userdataList(request):
 @api_view(["GET"])
 def nameWemail(request):
     if request.method == 'GET':
-        data = User.objects.filter(email = request.GET['email'])
-        dataJson = getusernamewithemailSerializers(data, many=True)
+        data1 = User.objects.filter(email = request.GET['email'])
+        dataJson = getusernamewithemailSerializers(data1, many=True)
 
         dd = dataJson.data[:]
-        return response(dd[0])
+        return Response(dd[0])
 
 
 def index(request):
