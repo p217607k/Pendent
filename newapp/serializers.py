@@ -17,6 +17,11 @@ class getuseremailSerializers(serializers.ModelSerializer):
         model = User
         fields = ('email',)
 
+class getusernamewithemailSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username','first_name',)
+
 # class partneralldataSerializers(serializers.ModelSerializer):
 #     class Meta:
 #         model = partner
@@ -39,6 +44,11 @@ class setupSerializers(serializers.ModelSerializer):
         model = setup
         fields = ('id','trigger','color','ring','message')
         depth = 1
+
+class setuppSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = setup
+        fields = '__all__'
 
 
 # class healthSerializers(serializers.ModelSerializer):

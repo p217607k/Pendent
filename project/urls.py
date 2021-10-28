@@ -26,14 +26,20 @@ urlpatterns = [
     path('', include('newapp.urls')),
     path('api-token-auth/',views.obtain_auth_token,name='api-tokn-auth'),
 
-    path('getthedataofuser/',newapp_view.userdataList),
+    #user data
+    path('getthedataofuser/',newapp_view.userdataList),#with user id
+    path('getthenameofuserwemail/',newapp_view.nameWemail),#with email id
 
     # get user id
-
     path('getuideveryone/', newapp_view.useridList),
 
     path('device/',newapp_view.device_list),
+
+    #schedule setup
     path('setupthings/',newapp_view.setup_list),
+    #receive setup
+    path('receivethesetup/', newapp_view.setup_received),
+
     path('findhealth/',newapp_view.health_list),
     path('ssidpassword/',newapp_view.ssidpass_list),
 
@@ -59,4 +65,7 @@ urlpatterns = [
     path('connecttopartner/', newapp_view.connectpartner),
     # search friend requests with emails
     path('searchfrequests/', newapp_view.searchrequests),
+
+    #schedule setup  ############ URL ############
+    path('schedulereceived', newapp_view.scheduleSetup),
 ]

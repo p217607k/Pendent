@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
 from django.contrib.auth.models import User
+from rest_framework import response
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework.renderers import JSONRenderer, TemplateHTMLRenderer
 from .forms import *
@@ -53,6 +54,7 @@ from rest_framework import permissions
 import http.client
 import ast
 from requests.api import request
+import requests
 
 conn = http.client.HTTPConnection("2factor.in")
 
@@ -80,6 +82,15 @@ def userdataList(request):
         dd = list(nameJson.data)[0]
         print(dd)
         return Response(dd)
+
+@api_view(["GET"])
+def nameWemail(request):
+    if request.method == 'GET':
+        data = User.objects.filter(email = request.GET['email'])
+        dataJson = getusernamewithemailSerializers(data, many=True)
+
+        dd = dataJson.data[:]
+        return response(dd[0])
 
 
 def index(request):
@@ -640,37 +651,47 @@ def scheduleSetup(request):
     print(day_month_year)
     print(hour_minute_second)
     data1 = setup.objects.all()
-    data1Json = allsetupSerializers(data1, many=True)
+    data1Json = setuppSerializers(data1, many=True)
     for data in data1Json.data:
         _date = data["date"]
         _timing = data["timing"]
         _id = data['id']
-        var1 = data['pin1Status']
-        var2 = data['pin2Status']
-        d_idvar = data['d_id']
-        print(var1)
+        username = data['username']
+        var2 = data['email1']
+        var3 = data['s_id']
+        var4 = data['trigger']
+        var5 = data['color']
+        var6 = data['ring']
+        var7 = data['location']
+        var8 = data['song']
+        var9 = data['emoji']
+        var10 = data['message']
+        print(username)
 
     # dataJson = pinscheduleTimeSerializers(data1, many=True)
-    if _date<=day_month_year and _timing<=hour_minute_second:
+        if _date<=day_month_year and _timing<=hour_minute_second:
             print("nono1")
-            if setup.objects.filter(id=_id):
-                print("nono2")
-                if (var1 != None):
-                    print("nono3")
-                    BASE_URL = f'http://127.0.0.1:8000/getpostdevicePinStatus/?d_id={d_idvar}'#'https://genorion1.herokuapp.com/getpostdevicePinStatus/?d_id=DIDM12932021AAAAAA'
-                    print("xxxxxxx1")
-                    token = "07f6fc6f36a7f5205236496b9816c08db09c29e5"
+            # if setup.objects.filter(id=_id):
+            #     print("nono2")
+            if (username != None):
+                print("nono3")
+                BASE_URL = f'http://127.0.0.1:8000/receivethesetup/'#'https://genorion1.herokuapp.com/getpostdevicePinStatus/?d_id=DIDM12932021AAAAAA'
+                print("xxxxxxx1")
+                token = "42006499b5c2b00800576bc2f20b848ac63b44b1"
 
-                    headers =  {'content-type' : 'application/json',
-                                'Authorization': "Token {}".format(token)}
-                    data = {"put":"yes",'d_id':d_idvar,'pin1Status':var1}
-                    print("xxx1")
-                    auth_response = requests.post(BASE_URL, headers=headers, data=json.dumps(data))
-                    auth_response.text
-                    print(auth_response)
-                    data2 = setup.objects.filter(id=_id)
-                    print("matched")
-                    data2.delete()
-                    print("delete")
+                headers =  {'content-type' : 'application/json',
+                            'Authorization': "Token {}".format(token)}
+                data = {'username':username,'email':var2,'s_id':var3,'trigger':var4,'color':var5,'ring':var6,'location':var7, 'song':var8,'emoji':var9,'message':var10}
+                print("xxx1")
+                auth_response = requests.post(BASE_URL, headers=headers, data=json.dumps(data))
+                auth_response.text
+                print(auth_response)
+                data2 = setup.objects.filter(id=_id)
+                print("matched")
+                data2.delete()
+                print("deleted")
+        else:
+            print("its ok try again..!!")
+    return render(request, 'setup.html')
 
 

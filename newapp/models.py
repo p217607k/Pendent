@@ -65,7 +65,7 @@ class setup(models.Model):
     message = models.TextField(max_length=999, blank=True)
 
 class receivedsetup(models.Model):
-    username = models.ForeignKey(allusernames, on_delete=models.CASCADE, primary_key=True)
+    username = models.CharField(max_length=50, primary_key=True)
     email = models.CharField(max_length=50, blank=False)
     s_id = models.CharField(unique=True, max_length=20)
     trigger = models.CharField(unique=True, max_length=20, null=True)
