@@ -101,9 +101,9 @@ def allemail(request):
     if request.method == 'GET':
         data1 = allEmail.objects.filter(email = request.GET['email'])
         dataJson = allemailsSerializers(data1, many=True)
-
-        dd = dataJson.data[:]
-        return Response(dd[0])
+        return Response(dataJson.data)
+        # dd = dataJson.data[:]
+        # return Response(dd[0])
 
 
 
