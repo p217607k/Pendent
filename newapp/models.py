@@ -141,9 +141,6 @@ class healthrecord(models.Model):
     healthS3 = models.FloatField(blank=True, null=True)
     healthS4 = models.FloatField(blank=True, null=True)
 
-    def __str__(self):
-        return self.d_id
-
 
 class ssidPassword(models.Model):
     d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
