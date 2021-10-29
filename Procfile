@@ -1,3 +1,3 @@
-release: python manage.py migrate
+# release: python manage.py migrate
 web: gunicorn project.routing
-celeryworker: celery -A myproject worker -l INFO & celery -A myproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler & wait -n
+celeryworker: celery -A project worker -l INFO & celery -A project beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler & wait -n
