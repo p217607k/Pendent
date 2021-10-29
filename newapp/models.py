@@ -60,17 +60,17 @@ class setup(models.Model):
     # email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
     date = models.DateField(default="2000-01-01", null=True)
     timing = models.TimeField(default='00:00')
-    s_id = models.CharField(unique=True, max_length=20)
-    trigger = models.CharField(unique=True, max_length=20, null=True)
-    color = models.CharField(max_length=50, null=True)
-    ring = models.IntegerField(null=True)
-    location = models.CharField(null=True, max_length=199)
-    song = models.IntegerField(default=0, null=True)
-    emoji = models.IntegerField(default=0, null=True)
-    message = models.TextField(max_length=999, blank=True)
+    s_id = models.CharField(unique=True, max_length=20, blank=True, null=True)
+    trigger = models.CharField(unique=True, max_length=20, blank=True, null=True)
+    color = models.CharField(max_length=50, blank=True, null=True)
+    ring = models.IntegerField(blank=True, null=True)
+    location = models.CharField(max_length=199, blank=True, null=True)
+    song = models.IntegerField(default=0, blank=True, null=True)
+    emoji = models.IntegerField(default=0, blank=True, null=True)
+    message = models.TextField(max_length=999, blank=True, null=True)
 
     def __str__(self):
-        return self.user
+        return self.email1
 
 class receivedsetup(models.Model):
     username = models.CharField(max_length=50)
@@ -92,9 +92,6 @@ class userimages(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     file = models.CharField(max_length=499999, blank=True, default=defprofoto())
 
-    def __str__(self):
-        return self.user
-
 
 class friendadd(models.Model):
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -107,32 +104,33 @@ class friendadd(models.Model):
 
 class friendtoaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    email1 = models.CharField(max_length=50, blank=False)
+    sender_email = models.CharField(max_length=50, blank=False)
     email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
     trigger = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.user
+        return self.sender_email
 
 class familymanaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    email1 = models.CharField(max_length=50, blank=False)
+    sender_email = models.CharField(max_length=50, blank=False)
+    username = models.CharField(max_length=50, blank=True, null=True)
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
     d_id = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0)
     trigger = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.user
+        return self.sender_email
 
 
 class partner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email1 = models.CharField(max_length=50, blank=False) #send by this
+    sender_email = models.CharField(max_length=50, blank=False) #send by this
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE) #sending to this email
     trigger = models.IntegerField(default=0)
 
     def __str__(self) -> str:
-        return self.user
+        return self.sender_email
 
 
 class healthrecord(models.Model):

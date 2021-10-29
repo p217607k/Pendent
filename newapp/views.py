@@ -665,9 +665,15 @@ def connectmyfamily(request):
     elif request.method == "POST":
         received_json_data=json.loads(request.body)
         serializer = familyaddaccessSerializers(data=request.data)
-        if serializer.is_valid():
+        dd = request.data["email"]
+        dd1 = request.data["user"]
+        print(dd)
+        print(dd1)
+        if familymanaccess.objects.filter(user = dd1, email = dd).exists():
+            return Response("Try with another email")
+        elif serializer.is_valid():
             serializer.save()
-            return Response("Partner added.Wait to confirm.", status=status.HTTP_201_CREATED)
+            return Response("Family member added... Wait to confirm.", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == "PUT":
@@ -680,14 +686,14 @@ def connectmyfamily(request):
         serializer = familyaddaccessSerializers(device_object, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response("partner changed.", status=status.HTTP_201_CREATED)
+            return Response("member changed.", status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == "DELETE":
         print("exc")
-        device_data = familymanaccess.objects.filter(user = request.GET['user'])
+        device_data = familymanaccess.objects.filter(user = request.GET['user'], email = request.GET['email'])
         device_data.delete()
-        return Response("Partner Deleted.")
+        return Response("Member Deleted.")
 
 @api_view(["GET","POST","PUT"])
 def searchrequestsfamily(request):
