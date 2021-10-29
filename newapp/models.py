@@ -40,7 +40,7 @@ class device(models.Model):
     d_name = models.CharField(max_length=15)
 
     def __str__(self):
-        return self.d_id
+        return self.d_name
 
 
 class emergencyNumber(models.Model):
@@ -50,8 +50,6 @@ class emergencyNumber(models.Model):
     number2 = models.BigIntegerField(blank=True, null=True)
     number3 = models.BigIntegerField(blank=True, null=True)
 
-    def __str__(self):
-        return self.d_id
 
 class setup(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -61,7 +59,7 @@ class setup(models.Model):
     date = models.DateField(default="2000-01-01", null=True)
     timing = models.TimeField(default='00:00')
     s_id = models.CharField(unique=True, max_length=20, blank=True, null=True)
-    trigger = models.CharField(unique=True, max_length=20, blank=True, null=True)
+    trigger = models.CharField(max_length=20, blank=True, null=True)
     color = models.CharField(max_length=50, blank=True, null=True)
     ring = models.IntegerField(blank=True, null=True)
     location = models.CharField(max_length=199, blank=True, null=True)
@@ -151,8 +149,6 @@ class ssidPassword(models.Model):
     ssid3 = models.CharField(unique=True, max_length=15)
     password3 = models.CharField(null=False, max_length=50)
 
-    def __str__(self):
-        return self.d_id
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):

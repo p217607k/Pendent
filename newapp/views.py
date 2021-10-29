@@ -482,7 +482,12 @@ def friendtoaddList(request):
     elif request.method == "POST":
         # received_json_data=json.loads(request.body)
         serializer = friendtoaccessSerializers(data=request.data)
-        if serializer.is_valid():
+        dd = request.data["email"]
+        dd1 = request.data["user"]
+        dd2 = request.data["sender_email"]
+        if friendtoaccess.objects.filter(user = dd1, email = dd, sender_email = dd2).exists():
+            return Response("Already sent the request")
+        elif serializer.is_valid():
             serializer.save()
             email1 = friendtoaccess.objects.filter()
             subJson1 = friendtoaccessSerializers(email1, many=True)
@@ -757,7 +762,7 @@ def scheduleSetup(request):
                 print("nono3")
                 BASE_URL = f'https://pendant.herokuapp.com/receivethesetup/'#'https://genorion1.herokuapp.com/getpostdevicePinStatus/?d_id=DIDM12932021AAAAAA'
                 print("xxxxxxx1")
-                token = "f2dff96c0f59bd56ad95a9d38c2b455cca2c5845"
+                token = "868b954202f34203494e93ef8525b8fee9029a9b"
 
                 headers =  {'content-type' : 'application/json',
                             'Authorization': "Token {}".format(token)}
