@@ -44,7 +44,7 @@ application = ProtocolTypeRouter({
         AuthMiddlewareStack(
             URLRouter(
                 [
-                    path('ws/chating/', ChatConsumer.as_asgi()), # Using asgi
+                    path('ws/chating/', ChatConsumer), # Using asgi
                 ]
             )
             

@@ -29,7 +29,7 @@ def debug_task(self):
 # shedule setup
 @app.task(bind=True)
 def autoupdtsetup(self):
-    url = 'http://127.0.0.1:8000/schedulereceived'
+    url = 'http://pendant.herokuapp.com/schedulereceived' #'http://127.0.0.1:8000/schedulereceived'
 
     while True:
         print("refreshing...")
