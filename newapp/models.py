@@ -103,6 +103,8 @@ class friendadd(models.Model):
 class friendtoaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sender_email = models.CharField(max_length=50, blank=False)
+    username = models.CharField(max_length=50, blank=True, null=True) #sender username
+    first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
     email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
     trigger = models.IntegerField(default=0)
 
@@ -111,8 +113,9 @@ class friendtoaccess(models.Model):
 
 class familymanaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    sender_email = models.CharField(max_length=50, blank=False)
-    username = models.CharField(max_length=50, blank=True, null=True)
+    sender_email = models.CharField(max_length=50, blank=False)  # sender email
+    username = models.CharField(max_length=50, blank=True, null=True) #sender username
+    first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
     d_id = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0)
     trigger = models.IntegerField(default=0)
@@ -124,6 +127,8 @@ class familymanaccess(models.Model):
 class partner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     sender_email = models.CharField(max_length=50, blank=False) #send by this
+    username = models.CharField(max_length=50, blank=True, null=True) #sender username
+    first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE) #sending to this email
     trigger = models.IntegerField(default=0)
 
