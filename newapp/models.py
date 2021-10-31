@@ -58,7 +58,6 @@ class setup(models.Model):
     # email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
     date = models.DateField(default="2000-01-01", null=True)
     timing = models.TimeField(default='00:00')
-    s_id = models.CharField(unique=True, max_length=20, blank=True, null=True)
     trigger = models.CharField(max_length=20, blank=True, null=True)
     color = models.CharField(max_length=50, blank=True, null=True)
     ring = models.IntegerField(blank=True, null=True)
@@ -72,15 +71,14 @@ class setup(models.Model):
 
 class receivedsetup(models.Model):
     username = models.CharField(max_length=50)
-    email = models.CharField(max_length=50, blank=False)
-    s_id = models.CharField(unique=True, max_length=20)
-    trigger = models.CharField(unique=True, max_length=20, null=True)
-    color = models.CharField(max_length=50, null=True)
-    ring = models.IntegerField(null=True)
-    location = models.CharField(null=True, max_length=199)
-    song = models.IntegerField(default=0, null=True)
-    emoji = models.IntegerField(default=0, null=True)
-    message = models.TextField(max_length=999, blank=True)
+    email = models.CharField(max_length=50, blank=False, null=True)
+    trigger = models.CharField(max_length=20, blank=False, null=True)
+    color = models.CharField(max_length=50, blank=False, null=True)
+    ring = models.IntegerField(blank=False, null=True)
+    location = models.CharField(max_length=199, blank=False, null=True)
+    song = models.IntegerField(default=0, blank=False, null=True)
+    emoji = models.IntegerField(default=0, blank=False, null=True)
+    message = models.TextField(max_length=999, blank=False, null=True)
 
     def __str__(self):
         return self.username

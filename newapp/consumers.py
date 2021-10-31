@@ -16,12 +16,12 @@ from django.http import JsonResponse
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        # self.room_name = self.scope['url_route']['kwargs']['room_name']
+        # self.room_name = self.scope['url_route']['kwargs']
         # self.room_group_name = 'chat_%s' % self.room_name
 
         # Join room
         # await self.channel_layer.group_add(
-        #     self.room_group_name,
+        #     # self.room_group_name,
         #     self.channel_name
         # )
 
@@ -46,17 +46,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.save_message(d_id, healthS1, healthS2, healthS3, healthS4)
 
         # Send message to room group
-        # await self.channel_layer.group_send(
-        #     # self.room_group_name,
-        #     {
-        #         # 'type': 'chat_message',
-        #         # 'd_id' : d_id,
-        #         'healthS1' : healthS1,
-        #         'healthS2': healthS2,
-        #         'healthS3': healthS3,
-        #         'healthS4': healthS4
-        #     }
-        # )
+        await self.channel_layer.group_send(
+            # self.room_group_name,
+            {
+                # 'type': 'chat_message',
+                'd_id' : d_id,
+                'healthS1' : healthS1,
+                'healthS2': healthS2,
+                'healthS3': healthS3,
+                'healthS4': healthS4
+            }
+        )
     
     # Receive message from room group
     async def chat_message(self, event):
@@ -80,7 +80,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @sync_to_async
     def save_message(self, d_id, healthS1, healthS2, healthS3, healthS4):
         d_id = allDevices(d_id=d_id)
-        if healthrecord.objects.filter(d_id=d_id).exists:
+        if healthrecord.objects.filter(d_id=d_id).exists():
             # df = healthrecord.objects.filter(d_id=d_id)
             # dfJson = recordhealthSerializers(df, many=True)
             t = healthrecord.objects.get(d_id=d_id)
@@ -89,7 +89,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             t.healthS3 = healthS3
             t.healthS4 = healthS4
             t.save()
-            print("updated")
+            print("updated...!!!")
         else:
             healthrecord.objects.create(d_id=d_id, healthS1=healthS1, healthS2=healthS2, healthS3=healthS3, healthS4=healthS4)
             print("created...!!!")

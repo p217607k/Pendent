@@ -335,7 +335,7 @@ def setup_received(request):
 
         # data = request.data
         # user_object = User.objects.get(email=data['email'])
-        floor_data = receivedsetup.objects.filter(username=request.GET ['username'])
+        floor_data = receivedsetup.objects.filter(username=request.GET['username'])
         floorJson = recivedsetupSerializers(floor_data, many=True)
         # return Response(floorJson.data)
         # dd = floorJson.data[:]
@@ -743,7 +743,6 @@ def scheduleSetup(request):
         _id = data['id']
         username = data['username']
         var2 = data['email1']
-        var3 = data['s_id']
         var4 = data['trigger']
         var5 = data['color']
         var6 = data['ring']
@@ -766,7 +765,15 @@ def scheduleSetup(request):
 
                 headers =  {'content-type' : 'application/json',
                             'Authorization': "Token {}".format(token)}
-                data = {'username':username,'email':var2,'s_id':var3,'trigger':var4,'color':var5,'ring':var6,'location':var7, 'song':var8,'emoji':var9,'message':var10}
+                data = {'username':username,
+                'email':var2,
+                'trigger':var4,
+                'color':var5,
+                'ring':var6,
+                'location':var7,
+                 'song':var8,
+                 'emoji':var9,
+                 'message':var10}
                 print("xxx1")
                 auth_response = requests.post(BASE_URL, headers=headers, data=json.dumps(data))
                 auth_response.text

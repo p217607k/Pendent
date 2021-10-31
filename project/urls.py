@@ -59,9 +59,7 @@ urlpatterns = [
 
     path('friendsuaccess/', newapp_view.friendsuaccess),
     path('friendtoaddlist/', newapp_view.friendtoaddList),
-
     #accept requests
-
     path('acceptingfriendtoaddlist/', newapp_view.acceptingfriendtoaddList),
 
     # partner connection
