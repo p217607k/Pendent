@@ -71,14 +71,14 @@ class setup(models.Model):
 
 class receivedsetup(models.Model):
     username = models.CharField(max_length=50)
-    email = models.CharField(max_length=50, blank=False, null=True)
-    trigger = models.CharField(max_length=20, blank=False, null=True)
-    color = models.CharField(max_length=50, blank=False, null=True)
-    ring = models.IntegerField(blank=False, null=True)
-    location = models.CharField(max_length=199, blank=False, null=True)
-    song = models.IntegerField(default=0, blank=False, null=True)
-    emoji = models.IntegerField(default=0, blank=False, null=True)
-    message = models.TextField(max_length=999, blank=False, null=True)
+    email = models.CharField(max_length=50, blank=True, null=True)
+    trigger = models.CharField(max_length=20, blank=True, null=True)
+    color = models.CharField(max_length=50, blank=True, null=True)
+    ring = models.IntegerField(blank=True, null=True)
+    location = models.CharField(max_length=199, blank=True, null=True)
+    song = models.IntegerField(default=0, blank=True, null=True)
+    emoji = models.IntegerField(default=0, blank=True, null=True)
+    message = models.TextField(max_length=999, blank=True, null=True)
 
     def __str__(self):
         return self.username
