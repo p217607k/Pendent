@@ -702,6 +702,51 @@ def connectmyfamily(request):
         device_data.delete()
         return Response("Member Deleted.")
 
+############# SOS     ############
+
+
+@api_view(["GET","POST","PUT","DELETE"])
+def connectmySOS(request):
+    if request.method == "GET":
+        device_data = SOS.objects.filter(d_id=request.GET['d_id'])
+        roomJson = allSOSSerializers(device_data, many=True)
+        # dd = roomJson.data[:]
+        # return Response(dd[0])
+        return Response(roomJson.data)
+
+    elif request.method == "POST":
+        received_json_data=json.loads(request.body)
+        serializer = allSOSSerializers(data=request.data)
+        # dd = request.data["email"]
+        # dd1 = request.data["user"]
+        # print(dd)
+        # print(dd1)
+        # if familymanaccess.objects.filter(user = dd1, email = dd).exists():
+        #     return Response("Try with another email")
+        if serializer.is_valid():
+            serializer.save()
+            return Response("SOS added.", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == "PUT":
+        received_json_data=json.loads(request.body)
+        device_id=received_json_data['d_id']
+        try:
+            device_object=SOS.objects.get(d_id=device_id)
+        except device_object.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        serializer = allSOSSerializers(device_object, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("SOS changed.", status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == "DELETE":
+        print("exc")
+        device_data = SOS.objects.filter(d_id = request.GET['d_id'])
+        device_data.delete()
+        return Response("SOS Deleted.")
+
 @api_view(["GET","POST","PUT"])
 def searchrequestsfamily(request):
     if request.method == "GET":

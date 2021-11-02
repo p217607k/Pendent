@@ -74,6 +74,9 @@ urlpatterns = [
     path('addfamilymenber/', newapp_view.connectmyfamily),
     #### accepting request and get d_id too for getting health data
     path('acceptgetfamilymenber/', newapp_view.searchrequestsfamily),
+
+    #### SOS api
+    path('addsostosend/', newapp_view.connectmySOS),
 ]
 
 

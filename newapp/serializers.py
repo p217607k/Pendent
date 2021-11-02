@@ -141,3 +141,8 @@ class allemailsSerializers(serializers.ModelSerializer):
     class Meta:
         model = allEmail
         fields = '__all__'
+
+class allSOSSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = SOS
+        fields = '__all__'

@@ -1,4 +1,5 @@
 from typing import AbstractSet
+from django.contrib import messages
 from django.db import models
 from django.conf import Settings, settings
 from django.db.models.signals import post_save
@@ -111,22 +112,34 @@ class friendtoaccess(models.Model):
 class familymanaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sender_email = models.CharField(max_length=50, blank=False)  # sender email
+    d_id_sender = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0) # sender device_id
     username = models.CharField(max_length=50, blank=True, null=True) #sender username
     first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
-    d_id = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0)
+    d_id_receiver = models.CharField(max_length=50, blank=True, null=True) # reciever device_id
     trigger = models.IntegerField(default=0)
 
     def __str__(self):
         return self.sender_email
 
+class SOS(models.Model):
+    d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
+    location = models.CharField(max_length=199, blank=True, null=True)
+    message = models.CharField(max_length=99, blank=True, null=True)
+    ring = models.IntegerField(blank=True, null=True)
+    user1 = models.CharField(max_length=50, blank=True, null=True)
+    user2 = models.CharField(max_length=50, blank=True, null=True)
+    user3 = models.CharField(max_length=50, blank=True, null=True)
+
 
 class partner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     sender_email = models.CharField(max_length=50, blank=False) #send by this
+    d_id_sender = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0) # sender device_id
     username = models.CharField(max_length=50, blank=True, null=True) #sender username
     first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
     email = models.ForeignKey(allEmail, on_delete=models.CASCADE) #sending to this email
+    d_id_receiver = models.CharField(max_length=50, blank=True, null=True) # receiver device_id
     trigger = models.IntegerField(default=0)
 
     def __str__(self) -> str:
