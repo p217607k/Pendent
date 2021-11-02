@@ -820,33 +820,33 @@ def change_pass(request):
         frm = PasswordChangeForm(user=request.user, data=request.POST)
         if frm.is_valid():
             frm.save()
-            return HttpResponseRedirect('/change_password')
+            return HttpResponse('Password Changed, Now go to the app and LOGIN with your new Password.')
     else:
         frm = PasswordChangeForm(user=request.user)
     return render(request, 'change_password.html', {'form': frm})
 
-@login_required(login_url="/flutter_change_password_login")
-def change_passwo(request):
-    if request.method == "POST":
-        frm = PasswordChangeForm(user=request.user, data=request.POST)
-        if frm.is_valid():
-            frm.save()
-            return HttpResponse("Password Changed", '/ind')
-    else:
-        frm = PasswordChangeForm(user=request.user)
-    return render(request, 'change_password_flu.html', {'form': frm})
+# @login_required(login_url="/flutter_change_password_login")
+# def change_passwo(request):
+#     if request.method == "POST":
+#         frm = PasswordChangeForm(user=request.user, data=request.POST)
+#         if frm.is_valid():
+#             frm.save()
+#             return HttpResponse("Password Changed")
+#     else:
+#         frm = PasswordChangeForm(user=request.user)
+#     return render(request, 'change_password_flu.html', {'form': frm})
 
-def flutter_change_password_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = auth.authenticate(username= username,password=password)
+# def flutter_change_password_login(request):
+#     if request.method == 'POST':
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = auth.authenticate(username= username,password=password)
 
-        if user is not None:
-            auth.login(request, user)
-            return redirect('/change_password_flu')
-        else:
-            messages.info(request,'invalid')
-            return redirect('flutter_change_password_login')
-    else:
-        return render(request, 'flutter_change_password_login.html')
+#         if user is not None:
+#             auth.login(request, user)
+#             return redirect('/change_password_flu')
+#         else:
+#             messages.info(request,'invalid')
+#             return redirect('flutter_change_password_login')
+#     else:
+#         return render(request, 'flutter_change_password_login.html')
