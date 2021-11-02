@@ -1,5 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 from celery import shared_task
+from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect
@@ -91,9 +92,9 @@ def nameWemail(request):
     if request.method == 'GET':
         data1 = User.objects.filter(email = request.GET['email'])
         dataJson = getusernamewithemailSerializers(data1, many=True)
-
-        dd = dataJson.data[:]
-        return Response(dd[0])
+        return Response(dataJson.data)
+        # dd = dataJson.data[:]
+        # return Response(dd[0])
 
 ## get all emails
 @api_view(["GET"])
@@ -664,8 +665,9 @@ def connectmyfamily(request):
     if request.method == "GET":
         device_data = familymanaccess.objects.filter(user=request.user)
         roomJson = familyaddaccessSerializers(device_data, many=True)
-        dd = roomJson.data[:]
-        return Response(dd[0])
+        # dd = roomJson.data[:]
+        # return Response(dd[0])
+        return Response(roomJson.data)
 
     elif request.method == "POST":
         received_json_data=json.loads(request.body)
@@ -787,3 +789,64 @@ def scheduleSetup(request):
     return render(request, 'setup.html')
 
 
+########################### login / register  ##########
+
+def userlogin(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(username= username,password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect('change_password/')
+        else:
+            messages.info(request,'invalid')
+            return redirect('/userlogin')
+    else:
+        return render(request, 'userlogin.html')
+
+
+        ################### reset password   ################
+
+
+
+                       ################### Change Password #####################
+
+
+@login_required(login_url="/userlogin")
+def change_pass(request):
+    if request.method == "POST":
+        frm = PasswordChangeForm(user=request.user, data=request.POST)
+        if frm.is_valid():
+            frm.save()
+            return HttpResponseRedirect('/change_password')
+    else:
+        frm = PasswordChangeForm(user=request.user)
+    return render(request, 'change_password.html', {'form': frm})
+
+@login_required(login_url="/flutter_change_password_login")
+def change_passwo(request):
+    if request.method == "POST":
+        frm = PasswordChangeForm(user=request.user, data=request.POST)
+        if frm.is_valid():
+            frm.save()
+            return HttpResponse("Password Changed", '/ind')
+    else:
+        frm = PasswordChangeForm(user=request.user)
+    return render(request, 'change_password_flu.html', {'form': frm})
+
+def flutter_change_password_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = auth.authenticate(username= username,password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect('/change_password_flu')
+        else:
+            messages.info(request,'invalid')
+            return redirect('flutter_change_password_login')
+    else:
+        return render(request, 'flutter_change_password_login.html')

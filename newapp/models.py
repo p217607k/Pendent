@@ -44,7 +44,6 @@ class device(models.Model):
 
 
 class emergencyNumber(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE)
     number1 = models.BigIntegerField(blank=True, null=True)
     number2 = models.BigIntegerField(blank=True, null=True)

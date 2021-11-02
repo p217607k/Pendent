@@ -1,0 +1,33 @@
+<form action=userlogin method=POST class="login100-form validate-form">
+{% csrf_token %}
+
+Log in
+<div class="wrap-input100 validate-input" data-validate="Enter Your Username">
+<input class=input100 name=username placeholder=Enter required>
+<span class=focus-input100 data-placeholder=&#xf106;></span>
+</div>
+<div class="wrap-input100 validate-input" data-validate="Enter password">
+<input class=input100 type=password name=password placeholder=Password required>
+<span class=focus-input100 data-placeholder=&#xf191;></span>
+</div>
+<div class=contact100-form-checkbox>
+<input type="checkbox" name="remember" />
+Remember me
+</div>
+</label>
+{% for messages in messages %}
+<p style=color:#59f605;text-align:center>{{messages}} </p>
+{% endfor %}
+<div class=container-login100-form-btn>
+<button class=login100-form-btn>
+Login
+</button>
+</div>
+{% comment %} <a class=txt1 href=#>
+Forgot Password?
+</a><br/> {% endcomment %}
+</div>
+</form>
+</div>
+</div>
+</div>
