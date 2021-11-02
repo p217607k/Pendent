@@ -26,7 +26,7 @@ from rest_framework import status
 # from .models import employees
 # from .serializers import employeesSerializer
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AND, IsAuthenticated
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,password_validation
@@ -708,8 +708,30 @@ def connectmyfamily(request):
 @api_view(["GET","POST","PUT","DELETE"])
 def connectmySOS(request):
     if request.method == "GET":
-        device_data = SOS.objects.filter(d_id=request.GET['d_id'])
-        roomJson = allSOSSerializers(device_data, many=True)
+        try:
+            device_data = SOS.objects.filter(d_id=request.GET['d_id'])
+            roomJson = allSOSSerializers(device_data, many=True)
+        except Exception:
+            pass
+
+        try:
+            device_data = SOS.objects.filter(user1=request.GET['user1'])
+            roomJson = allSOSSerializers(device_data, many=True)
+        except Exception:
+            pass
+
+        try:
+            device_data = SOS.objects.filter(user2=request.GET['user2'])
+            roomJson = allSOSSerializers(device_data, many=True)
+        except Exception:
+            pass
+        
+        try:
+            device_data = SOS.objects.filter(user3=request.GET['user3'])
+            roomJson = allSOSSerializers(device_data, many=True)
+        except Exception:
+            pass
+
         # dd = roomJson.data[:]
         # return Response(dd[0])
         return Response(roomJson.data)
