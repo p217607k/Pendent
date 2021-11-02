@@ -18,7 +18,7 @@ bottle-websocket==0.2.9
 celery==4.2.1
 certifi==2019.11.28
 cffi==1.14.3
-channels==3.0.1
+channels==2.2.0
 channels-redis==3.1.0
 chardet==3.0.4
 charset-normalizer==2.0.6
@@ -28,7 +28,7 @@ configparser==5.0.2
 constantly==15.1.0
 crayons==0.4.0
 cryptography==3.1.1
-daphne==3.0.2
+daphne==2.5.0
 dateutils==0.6.12
 decorator==4.4.2
 distro==1.6.0
