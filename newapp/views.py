@@ -815,7 +815,8 @@ def scheduleSetup(request):
         var4 = data['trigger']
         var5 = data['color']
         var6 = data['ring']
-        var7 = data['location']
+        var7 = data['long_tude']
+        var71 = data['lat_tude']
         var8 = data['song']
         var9 = data['emoji']
         var10 = data['message']
@@ -839,7 +840,8 @@ def scheduleSetup(request):
                 'trigger':var4,
                 'color':var5,
                 'ring':var6,
-                'location':var7,
+                'long_tude':var7,
+                'lat_tude':var71,
                  'song':var8,
                  'emoji':var9,
                  'message':var10}
