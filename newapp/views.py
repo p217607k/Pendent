@@ -486,13 +486,13 @@ def friendtoaddList(request):
         dd = request.data["email"]
         dd1 = request.data["user"]
         dd2 = request.data["sender_email"]
-        if friendtoaccess.objects.filter(user = dd1, email = dd, sender_email = dd2).exists():
+        if friendtoaccess.objects.filter(user = dd1, username = dd, sender_email = dd2).exists():
             return Response("Already sent the request")
         elif serializer.is_valid():
             serializer.save()
             email1 = friendtoaccess.objects.filter()
             subJson1 = friendtoaccessSerializers(email1, many=True)
-            xc1 = list(subJson1.data)[-1]["email"]
+            xc1 = list(subJson1.data)[-1]["username"]
             return Response("Sent request to: "+xc1, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == "PUT":
@@ -513,7 +513,7 @@ def friendtoaddList(request):
 @api_view(["GET","POST","PUT"])
 def acceptingfriendtoaddList(request):
     if request.method=="GET":
-        data = friendtoaccess.objects.filter(email=request.GET['email'])
+        data = friendtoaccess.objects.filter(username=request.GET['username'])
         placeJson = friendtoaccessSerializers(data, many=True)
         print(data)
         return Response(placeJson.data)

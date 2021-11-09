@@ -103,9 +103,9 @@ class friendadd(models.Model):
 class friendtoaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sender_email = models.CharField(max_length=50, blank=False)
-    username = models.CharField(max_length=50, blank=True, null=True) #sender username
+    sender_username = models.CharField(max_length=50, blank=True, null=True) #sender username
     first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
-    email = models.ForeignKey(friendadd, on_delete=models.CASCADE)
+    username = models.ForeignKey(allusernames, on_delete=models.CASCADE)
     trigger = models.IntegerField(default=0)
 
     def __str__(self):
