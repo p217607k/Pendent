@@ -115,9 +115,9 @@ class familymanaccess(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     sender_email = models.CharField(max_length=50, blank=False)  # sender email
     d_id_sender = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0) # sender device_id
-    username = models.CharField(max_length=50, blank=True, null=True) #sender username
+    sender_username = models.CharField(max_length=50, blank=True, null=True) #sender username
     first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
-    email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
+    username = models.ForeignKey(allusernames, on_delete=models.CASCADE)
     d_id_receiver = models.CharField(max_length=50, blank=True, null=True) # reciever device_id
     trigger = models.IntegerField(default=0)
 
@@ -139,9 +139,9 @@ class partner(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     sender_email = models.CharField(max_length=50, blank=False) #send by this
     d_id_sender = models.ForeignKey(allDevices, on_delete=models.CASCADE, default=0) # sender device_id
-    username = models.CharField(max_length=50, blank=True, null=True) #sender username
+    sender_username = models.CharField(max_length=50, blank=True, null=True) #sender username
     first_name = models.CharField(max_length=50, blank=True, null=True) #sender name
-    email = models.ForeignKey(allEmail, on_delete=models.CASCADE) #sending to this email
+    username = models.ForeignKey(allusernames, on_delete=models.CASCADE) #sending to this username
     d_id_receiver = models.CharField(max_length=50, blank=True, null=True) # receiver device_id
     trigger = models.IntegerField(default=0)
 
