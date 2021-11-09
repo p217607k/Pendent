@@ -96,6 +96,15 @@ def nameWemail(request):
         # dd = dataJson.data[:]
         # return Response(dd[0])
 
+@api_view(["GET"])
+def nameWusername(request):
+    if request.method == 'GET':
+        data1 = User.objects.filter(username = request.GET['username'])
+        dataJson = getusernamewithemailSerializers(data1, many=True)
+        return Response(dataJson.data)
+        # dd = dataJson.data[:]
+        # return Response(dd[0])
+
 ## get all emails
 @api_view(["GET"])
 def allemail(request):

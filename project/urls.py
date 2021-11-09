@@ -29,7 +29,8 @@ urlpatterns = [
     #user data
     path('getthedataofuser/',newapp_view.userdataList),#with user id
     path('getthenameofuserwemail/',newapp_view.nameWemail),#with email id
-
+    path('getthenameofuserwusername/',newapp_view.nameWusername),#with username
+    
     # get all emails
     path('getallemailswithuser/', newapp_view.allemail),
 
@@ -51,12 +52,10 @@ urlpatterns = [
     path('profilepicture/',newapp_view.profileimage),
 
     # emer number & ssid pass
-
     path('addemernumbers/', newapp_view.emerNumber),
     path('enterallthessidpasswords/', newapp_view.ssidList),
 
     # friends in need friend indeed
-
     path('friendsuaccess/', newapp_view.friendsuaccess),
     path('friendtoaddlist/', newapp_view.friendtoaddList),
     #accept requests
