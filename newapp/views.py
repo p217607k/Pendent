@@ -649,7 +649,7 @@ def connectpartner(request):
 @api_view(["GET","POST","PUT"])
 def searchrequests(request):
     if request.method == "GET":
-        device_data = partner.objects.filter(email=request.GET["email"])
+        device_data = partner.objects.filter(username=request.GET["username"])
         roomJson = partnersSerializers(device_data, many=True)
         # dd = roomJson.data[:]
         return Response(roomJson.data)
@@ -681,11 +681,11 @@ def connectmyfamily(request):
     elif request.method == "POST":
         received_json_data=json.loads(request.body)
         serializer = familyaddaccessSerializers(data=request.data)
-        dd = request.data["email"]
+        dd = request.data["username"]
         dd1 = request.data["user"]
         print(dd)
         print(dd1)
-        if familymanaccess.objects.filter(user = dd1, email = dd).exists():
+        if familymanaccess.objects.filter(user = dd1, username = dd).exists():
             return Response("Try with another email")
         elif serializer.is_valid():
             serializer.save()
@@ -707,7 +707,7 @@ def connectmyfamily(request):
     
     elif request.method == "DELETE":
         print("exc")
-        device_data = familymanaccess.objects.filter(user = request.GET['user'], email = request.GET['email'])
+        device_data = familymanaccess.objects.filter(user = request.GET['user'], username = request.GET['username'])
         device_data.delete()
         return Response("Member Deleted.")
 
@@ -781,7 +781,7 @@ def connectmySOS(request):
 @api_view(["GET","POST","PUT"])
 def searchrequestsfamily(request):
     if request.method == "GET":
-        device_data = familymanaccess.objects.filter(email=request.GET["email"])
+        device_data = familymanaccess.objects.filter(username=request.GET["username"])
         roomJson = familyaddaccessSerializers(device_data, many=True)
         # dd = roomJson.data[:]
         return Response(roomJson.data)
