@@ -483,7 +483,7 @@ def friendtoaddList(request):
     elif request.method == "POST":
         # received_json_data=json.loads(request.body)
         serializer = friendtoaccessSerializers(data=request.data)
-        dd = request.data["email"]
+        dd = request.data["username"]
         dd1 = request.data["user"]
         dd2 = request.data["sender_email"]
         if friendtoaccess.objects.filter(user = dd1, username = dd, sender_email = dd2).exists():
