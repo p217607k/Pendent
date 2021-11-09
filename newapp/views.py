@@ -840,7 +840,7 @@ def scheduleSetup(request):
                 print("nono3")
                 BASE_URL = f'https://pendant.herokuapp.com/receivethesetup/'#'https://genorion1.herokuapp.com/getpostdevicePinStatus/?d_id=DIDM12932021AAAAAA'
                 print("xxxxxxx1")
-                token = "761a98f16bd3919ddd717cf3c2f8c05aa2ed2a18"
+                token = "dbe4e294400a04d65329aa74956b164c91a24833"
 
                 headers =  {'content-type' : 'application/json',
                             'Authorization': "Token {}".format(token)}
