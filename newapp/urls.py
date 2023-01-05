@@ -1,7 +1,7 @@
 from django.urls import path,include
 from django.conf import settings
 from newapp import views
-from django.conf.urls import url
+# from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
@@ -11,12 +11,13 @@ app_name = 'newapp'
 urlpatterns = [
 
     path('', views.index, name='homepage'),
-    # path('/', views.room, name='room'),
+    # path('', views.index, name='index'),
+    path('<str:room_name>/', views.room, name='room'),
     path('registertodent',views.register_flutter,name='flutter-register'),
     path('ckeckingmail',views.checkemail,name='email-check'),
     path('ckeckingpassword',views.checkpassword,name='pass-check'),
     path('userlogin', views.userlogin, name='userlogin'),
-
+    
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="password_reset.html"), name='reset_password'),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="password_reset_sent.html"), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password_reset_form.html"), name='password_reset_confirm'),

@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('newapp.urls')),
     path('api-token-auth/',views.obtain_auth_token,name='api-tokn-auth'),
-
+    path('roomchat/', newapp_view.roomdetailList),
     #user data
     path('getthedataofuser/',newapp_view.userdataList),#with user id
     path('getthenameofuserwemail/',newapp_view.nameWemail),#with email id
@@ -33,6 +33,8 @@ urlpatterns = [
     
     # get all emails
     path('getallemailswithuser/', newapp_view.allemail),
+    path('roomchat/', newapp_view.roomdetailList),
+
 
     # get user id
     path('getuideveryone/', newapp_view.useridList),

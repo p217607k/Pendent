@@ -13,7 +13,14 @@ from newapp.utils import defprofoto
 
 # class User(AbstractUser):
 #     pass
+class Message(models.Model):
+    username = models.CharField(max_length=255)
+    room = models.CharField(max_length=255)
+    content = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ('date_added',)
 
 class allDevices(models.Model):
     d_id = models.CharField(max_length=40, default=0, primary_key=True)
@@ -133,6 +140,7 @@ class SOS(models.Model):
     user1 = models.CharField(max_length=50, blank=True, null=True)
     user2 = models.CharField(max_length=50, blank=True, null=True)
     user3 = models.CharField(max_length=50, blank=True, null=True)
+    trigger = models.IntegerField(default=0)
 
 
 class partner(models.Model):

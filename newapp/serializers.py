@@ -10,8 +10,12 @@ class userlogingetdataSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'email','first_name',)
-
-
+##
+class roomSerializers(serializers.ModelSerializer):
+    class Meta:
+        model =Message
+        fields = '__all__'
+###
 class getuseremailSerializers(serializers.ModelSerializer):
     class Meta:
         model = User

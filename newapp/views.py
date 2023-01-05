@@ -58,7 +58,7 @@ import http.client
 import ast
 from requests.api import request
 import requests
-
+from .models import Message
 conn = http.client.HTTPConnection("2factor.in")
 
 @api_view(["GET"])
@@ -69,13 +69,24 @@ def useridList(request):
         print(current_user.id)
         return Response(current_user.id)
 
+def index(request):
+    return render(request, 'index.html')
+
 def room(request, room_name):
-  username = request.GET.get('username', 'Anonymous')
+    username = request.GET.get('username', 'Anonymous')
+    messages = Message.objects.filter(room=room_name)[0:25]
 
-  return render(request, 'chat/room.html', {'room_name': room_name, 'username': username})
-
+    return render(request, 'room.html', {'room_name': room_name, 'username': username, 'messages': messages})
 # Create your views here.
-
+@api_view(["GET"])
+def roomdetailList(request):
+    if request.method=="GET":
+        device_data = Message.objects.filter(room=request.GET['room'])
+        roomJson = roomSerializers(device_data, many=True)
+        # return Response(nameJson.data)
+        dd = list(roomJson.data)[0]
+        print(dd)
+        return Response(dd)
 @api_view(["GET"])
 def userdataList(request):
     if request.method=="GET":
@@ -153,7 +164,7 @@ def index(request):
     # }
 
     # print(dict(stu))
-    return render(request, "ind.html", context)
+    return render(request, "index.html", context)
     # return render(request, 'index.html')
 
 
@@ -724,20 +735,32 @@ def connectmySOS(request):
             pass
 
         try:
-            device_data = SOS.objects.filter(user1=request.GET['user1'])
+            device_data = SOS.objects.filter(user1=request.GET['user'])
             roomJson = allSOSSerializers(device_data, many=True)
+            if roomJson.data == []:
+                pass
+            else:
+                return Response(roomJson.data)
         except Exception:
             pass
 
         try:
-            device_data = SOS.objects.filter(user2=request.GET['user2'])
+            device_data = SOS.objects.filter(user2=request.GET['user'])
             roomJson = allSOSSerializers(device_data, many=True)
+            if roomJson.data == []:
+                pass
+            else:
+                return Response(roomJson.data)
         except Exception:
             pass
         
         try:
-            device_data = SOS.objects.filter(user3=request.GET['user3'])
+            device_data = SOS.objects.filter(user3=request.GET['user'])
             roomJson = allSOSSerializers(device_data, many=True)
+            if roomJson.data == []:
+                pass
+            else:
+                return Response(roomJson.data)
         except Exception:
             pass
 
