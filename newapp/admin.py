@@ -5,6 +5,8 @@ from . models import *
 admin.site.register(Message)
 
 admin.site.register(setup)
+admin.site.register(FirebaseDetails)
+
 admin.site.register(device)
 admin.site.register(healthrecord)
 admin.site.register(ssidPassword)

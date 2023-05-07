@@ -150,3 +150,10 @@ class allSOSSerializers(serializers.ModelSerializer):
     class Meta:
         model = SOS
         fields = '__all__'
+
+# firebase
+
+class FirebaseSer(serializers.ModelSerializer):
+    class Meta:
+        model = FirebaseDetails
+        fields = '__all__'

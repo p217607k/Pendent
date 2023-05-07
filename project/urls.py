@@ -19,8 +19,9 @@ from newapp import views
 from newapp import views as newapp_view
 from django.contrib.auth import views as auth
 from rest_framework.authtoken import views
-from django.conf import settings
 
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('newapp.urls')),
@@ -33,7 +34,7 @@ urlpatterns = [
     
     # get all emails
     path('getallemailswithuser/', newapp_view.allemail),
-    path('roomchat/', newapp_view.roomdetailList),
+    # path('roomchat/', newapp_view.roomdetailList),
 
 
     # get user id
@@ -62,7 +63,8 @@ urlpatterns = [
     path('friendtoaddlist/', newapp_view.friendtoaddList),
     #accept requests
     path('acceptingfriendtoaddlist/', newapp_view.acceptingfriendtoaddList),
-
+    ## notification
+    path('notification/', newapp_view.fire),
     # partner connection
     path('connecttopartner/', newapp_view.connectpartner),
     # search friend requests with emails
@@ -78,7 +80,7 @@ urlpatterns = [
 
     #### SOS api
     path('addsostosend/', newapp_view.connectmySOS),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 admin.site.site_header = 'Pendent Database'

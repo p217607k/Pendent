@@ -75,18 +75,24 @@ def index(request):
 def room(request, room_name):
     username = request.GET.get('username', 'Anonymous')
     messages = Message.objects.filter(room=room_name)[0:25]
+    image = Message.objects.all()
 
-    return render(request, 'room.html', {'room_name': room_name, 'username': username, 'messages': messages})
+    return render(request, 'room.html', {'room_name': room_name, 'username': username, 'messages': messages,'image':image})
 # Create your views here.
 @api_view(["GET"])
 def roomdetailList(request):
-    if request.method=="GET":
-        device_data = Message.objects.filter(room=request.GET['room'])
-        roomJson = roomSerializers(device_data, many=True)
-        # return Response(nameJson.data)
-        dd = list(roomJson.data)[0]
-        print(dd)
-        return Response(dd)
+    try:
+        if request.method=="GET":
+            device_data = Message.objects.filter(room=request.GET['room'])
+            roomJson = roomSerializers(device_data, many=True)
+            # return Response(nameJson.data)
+            dd = list(roomJson.data)[0]
+            
+            return Response(dd)
+    except Exception as e:
+        print('does not exist',e)
+        return Response({'msg':'does not exist room please try agrin..'},status=status.HTTP_404_NOT_FOUND)
+
 @api_view(["GET"])
 def userdataList(request):
     if request.method=="GET":
@@ -305,7 +311,37 @@ def device_list(request):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+    
+def setup_delete():
+        now = datetime.today()
+        now1=str(now)
+        now2 = now1[:16:]
+        dat1 = datetime.strptime(now2, "%Y-%m-%d  %H:%M")
+        data1 = setup.objects.filter(trigger='1')
+        # pinscheduledlist = pinschedule.objects.all()
+        dataJson = allsetupSerializers(data1, many=True)
+        # pinjson = pinscheduleSerializers(pinscheduledlist,many=True)
+        
+        for data in dataJson.data:
+            _date = data['date']
+            _timing = data['timing']
+            _id = data['id']
+            _trigger = data['trigger'] =='1'
 
+            dateTimeVal = _date+" "+_timing
+            tempdate = datetime.strptime(dateTimeVal, "%Y-%m-%d  %H:%M")
+            
+            if(tempdate <=  dat1 ):
+              data2 = setup.objects.filter(id=_id)
+              data3 = setup.objects.filter(trigger=_trigger)
+              data3.delete()
+              data2.delete() 
+              print(_id)
+              print("delete")
+            else:
+                print("NOOOOOOOOOOOOOOOOOOO")
+            
+        
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def setup_list(request):
@@ -951,3 +987,66 @@ def change_pass(request):
 #             return redirect('flutter_change_password_login')
 #     else:
 #         return render(request, 'flutter_change_password_login.html')
+
+
+## notification
+
+def send_fcm_message(x,fcmToken):
+    urls_api ="https://fcm.googleapis.com/fcm/send"
+    server_key ="key=AAAAUOxNlRo:APA91bFeXi6tYaX5dP4OKKQHFfNK62CCbg36p59jp1VUHOQL9GDiyY8pGLmDqJ6XWq4dcVzr03OcgKevyY--gSqMHmK48tvlDulp69m_ATAa4IoHSV_YRwd91uDPlDIGfbwAlAUhu3b"
+        
+    fcm_message={"to":fcmToken,
+                "notification":{
+                "body":"Sensor "+str(x)+ " is High",
+                "title":"200",
+                "subtitle":"200" }
+                 }
+   
+    headersdata = {
+            'Authorization': "key=AAAAUOxNlRo:APA91bFeXi6tYaX5dP4OKKQHFfNK62CCbg36p59jp1VUHOQL9GDiyY8pGLmDqJ6XWq4dcVzr03OcgKevyY--gSqMHmK48tvlDulp69m_ATAa4IoHSV_YRwd91uDPlDIGfbwAlAUhu3bk",
+            'Content-Type': 'application/json; UTF-8',
+        }
+
+    print('Message sent',headersdata)
+  # [END use_access_token]
+    resp = requests.post(urls_api, data=json.dumps(fcm_message), headers=headersdata)
+    # resp=""
+    print(resp.status_code)
+    if resp.status_code == 200:
+            print('Message sent to Firebase for delivery, response:')
+            print(resp.text)
+    else:
+            print('Unable to send message to Firebase')
+            print(resp.text)
+### new
+@api_view(["POST"])
+def fire(request):
+    received_json_data=json.loads(request.body)
+    print(received_json_data)
+        # if received_json_data['put']!='yes':
+    serializer = FirebaseSer (data=request.data)
+        
+
+    if serializer.is_valid():
+        serializer.save()
+        # return Response(res.json())
+        return Response("data created", status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    #    return response
+
+
+
+
+def getAlldata(dId):
+    getUser = device.objects.get(d_id=dId)
+    print(getUser.user)
+    getUsernFirebasetable(getUser.user)
+
+
+def getUsernFirebasetable(userData):
+    getUser = FirebaseDetails.objects.get(user=userData)
+    print(getUser.fcm)
+
+    send_fcm_message(1,getUser.fcm) 

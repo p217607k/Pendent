@@ -11,12 +11,12 @@ app_name = 'newapp'
 urlpatterns = [
 
     path('', views.index, name='homepage'),
-    # path('', views.index, name='index'),
     path('<str:room_name>/', views.room, name='room'),
-    path('registertodent',views.register_flutter,name='flutter-register'),
-    path('ckeckingmail',views.checkemail,name='email-check'),
-    path('ckeckingpassword',views.checkpassword,name='pass-check'),
-    path('userlogin', views.userlogin, name='userlogin'),
+    # path('<str:room_name>/', views.room, name='room'),
+    path('registertodent/',views.register_flutter,name='flutter-register'),
+    path('ckeckingmail/',views.checkemail,name='email-check'),
+    path('ckeckingpassword/',views.checkpassword,name='pass-check'),
+    path('userlogin/', views.userlogin, name='userlogin'),
     
     path('reset_password/', auth_views.PasswordResetView.as_view(template_name="password_reset.html"), name='reset_password'),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="password_reset_sent.html"), name='password_reset_done'),

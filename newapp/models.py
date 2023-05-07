@@ -13,11 +13,14 @@ from newapp.utils import defprofoto
 
 # class User(AbstractUser):
 #     pass
+from django.db import models
+
 class Message(models.Model):
     username = models.CharField(max_length=255)
     room = models.CharField(max_length=255)
     content = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True)
+    file=models.FileField(upload_to='usermessages/file/')
 
     class Meta:
         ordering = ('date_added',)
@@ -63,8 +66,8 @@ class setup(models.Model):
     email1 = models.CharField(max_length=50, blank=False)
     username = models.ForeignKey(allusernames, on_delete=models.CASCADE)
     # email = models.ForeignKey(allEmail, on_delete=models.CASCADE)
-    date = models.DateField(default="2000-01-01", null=True)
-    timing = models.TimeField(default='00:00')
+    date = models.DateField(default="2000-01-01",null=True)
+    timing = models.CharField(max_length=200,default='00:00')
     trigger = models.CharField(max_length=20, blank=True, null=True)
     color = models.CharField(max_length=50, blank=True, null=True)
     ring = models.IntegerField(blank=True, null=True)
@@ -76,7 +79,10 @@ class setup(models.Model):
 
     def __str__(self):
         return self.email1
-
+class FirebaseDetails(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    d_id = models.OneToOneField(allDevices, on_delete=models.CASCADE,primary_key=True)
+    fcm = models.TextField()
 class receivedsetup(models.Model):
     username = models.CharField(max_length=50)
     email = models.CharField(max_length=50, blank=True, null=True)
